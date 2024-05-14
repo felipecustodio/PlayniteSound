@@ -19,6 +19,7 @@ using PlayniteSounds.Downloaders;
 using PlayniteSounds.Common;
 using PlayniteSounds.Common.Constants;
 using PlayniteSounds.Models;
+using PlayniteSounds.Controls;
 
 namespace PlayniteSounds
 {
@@ -78,6 +79,11 @@ namespace PlayniteSounds
         private readonly List<MainMenuItem> _mainMenuItems;
 
         private ISet<string> _pausers = new HashSet<string>();
+
+        private List<MusicControl> _MusicControls = new List<MusicControl>();
+        
+        public void MusicResume() => ResumeMusic();
+        public void MusicPause() => PauseMusic();
 
         #region Constructor
 
@@ -145,6 +151,17 @@ namespace PlayniteSounds
                 PlayniteApi.Database.Platforms.ItemCollectionChanged += UpdatePlatforms;
                 PlayniteApi.Database.FilterPresets.ItemCollectionChanged += UpdateFilters;
                 PlayniteApi.UriHandler.RegisterSource("Sounds", HandleUriEvent);
+
+                #region Control constructor
+
+                AddCustomElementSupport(new AddCustomElementSupportArgs
+                {
+                    SourceName = "Sounds",
+                    ElementList = new List<string> { "MusicControl" }
+                });
+               
+                #endregion
+
             }
             catch (Exception e)
             {
@@ -158,6 +175,27 @@ namespace PlayniteSounds
 
         private static string HelpLine(string baseMessage)
             => $"{SoundFile.DesktopPrefix}{baseMessage} - {SoundFile.FullScreenPrefix}{baseMessage}\n";
+
+        #region Control registration
+
+        public override Control GetGameViewControl(GetGameViewControlArgs args)
+        {
+            var strArgs = args.Name.Split('_');
+
+            var controlType = strArgs[0];
+
+            switch (controlType)
+            {
+                case "MusicControl":
+                    _MusicControls.Add(new MusicControl(PlayniteApi, this));
+                    return _MusicControls.Last();
+                default: 
+                    throw new ArgumentException($"Unrecognized controlType '{controlType}' for request '{args.Name}'");
+            }
+        }
+
+        #endregion
+
 
         #endregion
 
@@ -572,6 +610,7 @@ namespace PlayniteSounds
             _musicPlayer.Clock.Controller.Stop();
             _musicPlayer.Clock = null;
             _musicPlayer.Close();
+            _MusicControls.ForEach( c => c.CurrentMusicName = string.Empty);
         }
 
         private void ForcePlayMusicFromPath(string filePath)
@@ -607,6 +646,7 @@ namespace PlayniteSounds
                 _musicPlayer.Clock = _timeLine.CreateClock();
                 _musicPlayer.Clock.Controller.Begin();
                 _musicEnded = false;
+                _MusicControls.ForEach(c => c.CurrentMusicName = Path.GetFileNameWithoutExtension(filePath));
             }
         }
 
@@ -1760,7 +1800,11 @@ namespace PlayniteSounds
 
         private bool ShouldPlaySound() => ShouldPlayAudio(Settings.SoundState);
 
-        private bool ShouldPlayMusic() => _pausers.Count is 0 && !_gameRunning && ShouldPlayAudio(Settings.MusicState);
+        private bool ShouldPlayMusic() => 
+            _pausers.Count is 0 
+            && _MusicControls.All(c => c.VideoIsPlaying==false)
+            && !_gameRunning 
+            && ShouldPlayAudio(Settings.MusicState);
 
         private bool ShouldPlayAudio(AudioState state)
         {
@@ -1865,5 +1909,6 @@ namespace PlayniteSounds
         private IDialogsFactory Dialogs => PlayniteApi.Dialogs;
 
         #endregion
+
     }
 }

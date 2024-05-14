@@ -81,3 +81,71 @@ Thanks to the following people who have contributed with translations:
 * Original Localization file loader by [Lacro59](https://github.com/Lacro59)
 * Sound Manager by [dfirsht](https://github.com/dfirsht)
 * Downloader Manager by [cnapolit](https://github.com/cnapolit)
+
+## Theme Integration
+Extension expose custom control to manage Music playing: ```Sounds_MusicControl```. Using this control it is possible to:
+* **Pause/Resume music** for example during trailer playback
+* **Retrieve current Music filename** to show music title
+
+### Show current Music name
+
+Current Music filename (no path, no extension) is exposed via Content.CurrentMusicName property. you may use in via binding:
+
+```xml
+    <ContentControl x:Name="Sounds_MusicControl" />
+    <TextBlock 
+        Text="{Binding ElementName=Sounds_MusicControl, Path=Content.CurrentMusicName, FallbackValue='----'}"
+    />
+```
+)
+
+### Pause/Resume during trailer playback
+Control track Tag property manipulation and pause Music on 'True' value and Resume on false.
+<details>
+  <summary>Here how it can be implemented in theme GameDetail.xaml</summary>
+
+```xml
+  <Style TargetType="{x:Type GameDetails}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type GameDetails}">
+                    <Grid> 
+                        ...
+                        <ContentControl x:Name="Sounds_MusicControl" />
+                        ...
+                    </Grid>
+                    ...
+                    <ControlTemplate.Triggers>
+                        <DataTrigger
+                            Binding="{Binding ElementName=ExtraMetadataLoader_VideoLoaderControl_NoControls_Sound, Path=Content.IsPlayerMuted, FallbackValue={StaticResource False}}"
+                            Value="{StaticResource False}">
+                            <Setter 
+                                Property="Tag" 
+                                Value="{Binding ElementName=ExtraMetadataLoader_VideoLoaderControl_NoControls_Sound, Path=Content.SettingsModel.Settings.IsVideoPlaying}" 
+                                TargetName="Sounds_MusicControl" />
+                        </DataTrigger>
+
+                        <DataTrigger
+                            Binding="{Binding ElementName=ExtraMetadataLoader_VideoLoaderControl_NoControls_Sound, Path=Content.IsPlayerMuted, FallbackValue={StaticResource False}}"
+                            Value="{StaticResource True}">
+                            <Setter 
+                                Property="Tag" 
+                                Value="False" 
+                                TargetName="Sounds_MusicControl" />
+                        </DataTrigger>           
+                        
+                        <DataTrigger
+                            Binding="{Binding ElementName=PART_ElemGameDetails, Path=Visibility}"
+                            Value="Collapsed">
+                            <Setter 
+                                Property="Tag" 
+                                Value="False" 
+                                TargetName="Sounds_MusicControl" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+```
+</details>
