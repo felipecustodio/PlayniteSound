@@ -21,7 +21,7 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkRandomizeOnMusicEnd">Случайный выбор музыки при повторе</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkRandomizeOnEverySelect">Случайный выбор музыки при выборе</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkBackup">Воспроизводить стандартную музыку, если музыка по умолчанию не найдена</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_StopMusic">Остановить музыку, когда</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_StopMusic">Останавливать когда:</sys:String>
 
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize">Автоматически нормализовать громкость при загрузке</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize_Tag">Отметить нормализованные игры</sys:String>
@@ -43,9 +43,9 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_YtDLp_Hint">Для загрузки аудио с YouTube требуется yt-dlp</sys:String>
 
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbItemNever">Никогда</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbItemDesktop">Рабочий стол</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbItemFullscreen">Полноэкранный режим</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbItemDesktopFullscreen">Рабочий стол + Полноэкранный режим</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbItemDesktop">В стандартном режиме</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbItemFullscreen">В полноэкранном режиме</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbItemDesktopFullscreen">В обоих режимах</sys:String>
 
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbStopItemIsStarting">Игра запускается</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbStopItemHasStarted">Игра запущена</sys:String>
@@ -64,7 +64,7 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageAlbumSelect">Хотите выбрать альбомы вручную?</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageSongSelect">Хотите выбрать песни вручную?</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageCaptionAlbum">Пожалуйста, выберите альбом для игры {0}</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageCaptionSong">Пожалуйста, выберите песню для альбома {0}</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageCaptionSong">Пожалуйста, выберите песню из альбома {0}</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageOverwriteSelect">Хотите заменить существующие файлы?</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_DialogCaptionSelectOption">Выберите опцию</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageDone">Готово</sys:String>
