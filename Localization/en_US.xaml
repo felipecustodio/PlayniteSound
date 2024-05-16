@@ -26,9 +26,9 @@
 
     <sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize">Automatically normalize music when downloading</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize_Tag">Tag Normalized Games</sys:String>
-    <sys:String x:Key="LOC_PLAYNITESOUNDS_FF_Path">FFmpeg Path</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_FF_Path">ffmpeg path:</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_FF_Hint">FFmpeg is required for audio normalization and downloading</sys:String>
-    <sys:String x:Key="LOC_PLAYNITESOUNDS_FFNorm_Path">FFmpeg-Normalize Path</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_FFNorm_Path">ffmpeg-normalize path:</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_FFNorm_Hint">Normalizing audio allows consistent volume between tracks without compromising quality</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_FFNorm_Doc">FFmpeg-Normalize Documentation</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_FFNorm_Cust">(Optional) FFmpeg-Normalize Custom Arguments</sys:String>
@@ -40,6 +40,9 @@
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ManParDown">Manual: Display Results Side-By-Side</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_AutoParDown">Auto: Select Results Side-By-Side</sys:String>
 
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_YtDLp_Path">yt-dlp path:</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_YtDLp_Hint">yt-dlp is required for downloading audio from Youtube</sys:String>
+    
     <sys:String x:Key="LOC_PLAYNITESOUNDS_CmbItemNever">Never</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_CmbItemDesktop">Desktop</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_CmbItemFullscreen">Fullscreen</sys:String>

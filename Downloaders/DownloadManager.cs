@@ -30,9 +30,10 @@ namespace PlayniteSounds.Downloaders
 
         public IEnumerable<Album> GetAlbumsForGame(string gameName, Source source, bool auto = false)
         {
-            if ((source is Source.All || source is Source.Youtube) && string.IsNullOrWhiteSpace(_settings.FFmpegPath))
+            if ((source is Source.All || source is Source.Youtube) 
+                && (string.IsNullOrWhiteSpace(_settings.FFmpegPath) || string.IsNullOrWhiteSpace(_settings.YtDlpPath)))
             {
-                throw new Exception("Cannot download from Youtube without the FFmpeg Path specified in settings.");
+                throw new Exception("Cannot download from Youtube without the FFmpeg and YT-DLP Paths specified in settings.");
             }
 
             if (source is Source.All)

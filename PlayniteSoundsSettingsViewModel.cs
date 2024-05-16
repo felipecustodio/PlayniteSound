@@ -25,7 +25,7 @@ namespace PlayniteSounds
         {
             get => new RelayCommand<object>((a) =>
             {
-                var filePath = _plugin.PlayniteApi.Dialogs.SelectFile(string.Empty);
+                var filePath = _plugin.PlayniteApi.Dialogs.SelectFile("ffmpeg|ffmpeg.exe");
                 if (!string.IsNullOrWhiteSpace(filePath))
                 {
                     Settings.FFmpegPath = filePath;
@@ -48,7 +48,19 @@ namespace PlayniteSounds
         {
             get => new RelayCommand<object>((url) =>
             {
-                _plugin.Try(() => Process.Start((url as Uri).AbsoluteUri));
+                _plugin.Try(() => Process.Start(new Uri(url.ToString()).AbsoluteUri));
+            });
+        }
+
+        public RelayCommand<object> BrowseForYtDlpFile
+        {
+            get => new RelayCommand<object>((a) =>
+            {
+                var filePath = _plugin.PlayniteApi.Dialogs.SelectFile("yt-dlp|yt-dlp.exe");
+                if (!string.IsNullOrWhiteSpace(filePath))
+                {
+                    Settings.YtDlpPath = filePath;
+                }
             });
         }
 
@@ -130,6 +142,12 @@ namespace PlayniteSounds
             if (!string.IsNullOrEmpty(Settings.FFmpegPath) && !File.Exists(Settings.FFmpegPath))
             {
                 errors.Add($"The path to FFmpeg '{Settings.FFmpegPath}' is invalid");
+                outcome = false;
+            }
+
+            if (!string.IsNullOrEmpty(Settings.YtDlpPath) && !File.Exists(Settings.YtDlpPath))
+            {
+                errors.Add($"The path to Yt-Dlp '{Settings.YtDlpPath}' is invalid");
                 outcome = false;
             }
 

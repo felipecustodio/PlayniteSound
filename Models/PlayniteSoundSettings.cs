@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Playnite.SDK.Data;
+using System;
 using System.Collections.Generic;
 
 namespace PlayniteSounds.Models
 {
-    public class PlayniteSoundsSettings
+    public class PlayniteSoundsSettings: ObservableObject
     {
         public AudioState MusicState { get; set; } = AudioState.Always;
         public AudioState SoundState { get; set; } = AudioState.Always;
@@ -22,8 +23,43 @@ namespace PlayniteSounds.Models
         public bool YtPlaylists { get; set; } = true;
         public bool NormalizeMusic { get; set; } = true;
         public bool TagNormalizedGames { get; set; }
-        public string FFmpegPath { get; set; }
-        public string FFmpegNormalizePath { get; set; }
+
+        [DontSerialize]
+        private string ytDlpPath { get; set; }
+        public string YtDlpPath { 
+            get => ytDlpPath;
+            set
+            { 
+                ytDlpPath = value;
+                OnPropertyChanged();
+            }
+         }
+        
+        [DontSerialize]
+        private string ffmpegPath { get; set; }
+        public string FFmpegPath
+        {
+            get => ffmpegPath;
+            set
+            {
+                ffmpegPath = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        [DontSerialize]
+        private string ffmpegNormalizePath { get; set; }
+        public string FFmpegNormalizePath
+        {
+            get => ffmpegNormalizePath;
+            set
+            {
+                ffmpegNormalizePath = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         public string FFmpegNormalizeArgs { get; set; }
         public IList<Source> Downloaders { get; set; } = new List<Source> { Source.Youtube };
         public DateTime LastAutoLibUpdateAssetsDownload { get; set; } = DateTime.Now;

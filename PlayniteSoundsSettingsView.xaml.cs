@@ -1,8 +1,9 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace PlayniteSounds
 {
-    public partial class PlayniteSoundsSettingsView
+    public partial class PlayniteSoundsSettingsView : UserControl
     {
         private readonly PlayniteSounds _plugin;
 

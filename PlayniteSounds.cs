@@ -20,6 +20,7 @@ using PlayniteSounds.Common;
 using PlayniteSounds.Common.Constants;
 using PlayniteSounds.Models;
 using PlayniteSounds.Controls;
+using System.Runtime;
 
 namespace PlayniteSounds
 {
@@ -159,8 +160,13 @@ namespace PlayniteSounds
                     SourceName = "Sounds",
                     ElementList = new List<string> { "MusicControl" }
                 });
-               
+
                 #endregion
+                AddSettingsSupport(new AddSettingsSupportArgs
+                {
+                    SourceName = "Sounds",
+                    SettingsRoot = $"{nameof(SettingsModel)}.{nameof(SettingsModel.Settings)}"
+                });
 
             }
             catch (Exception e)
