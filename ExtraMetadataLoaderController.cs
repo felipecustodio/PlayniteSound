@@ -30,10 +30,20 @@ namespace PlayniteSounds
         }
 
         static List<dynamic> GetVideoControls() {
-            return new List<dynamic>(ExtraMetadataLoader
+            var list = new List<dynamic>(ExtraMetadataLoader
                 .GetType()
                 .GetField("configuredVideoControls", BindingFlags.NonPublic | BindingFlags.Instance)
                 .GetValue(ExtraMetadataLoader));
+
+            var gridVideoControl = ExtraMetadataLoader
+                .GetType()
+                .GetField("gridVideoControl", BindingFlags.NonPublic | BindingFlags.Instance)
+                .GetValue(ExtraMetadataLoader);
+
+            if (gridVideoControl != null)
+                list.Add(gridVideoControl);
+
+            return list;
         }
 
         static void OnVideoControlChanged() {
