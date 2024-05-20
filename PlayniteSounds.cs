@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Media;
+using System.ComponentModel;
 using Playnite.SDK.Events;
 using System.Diagnostics;
 using Microsoft.Win32;
@@ -20,7 +21,6 @@ using PlayniteSounds.Common;
 using PlayniteSounds.Common.Constants;
 using PlayniteSounds.Models;
 using PlayniteSounds.Controls;
-using System.Runtime;
 
 namespace PlayniteSounds
 {
@@ -60,7 +60,7 @@ namespace PlayniteSounds
         private bool _firstSelectSound = true;
         private bool _closeAudioFilesNextPlay;
 
-        private string _prevMusicFileName = string.Empty;  //used to prevent same file being restarted 
+        private string _prevMusicFileName = string.Empty;  //used to prevent same file being restarted
 
         private readonly string _extraMetaDataFolder;
         private readonly string _musicFilesDataPath;
@@ -80,11 +80,6 @@ namespace PlayniteSounds
         private readonly List<MainMenuItem> _mainMenuItems;
 
         private ISet<string> _pausers = new HashSet<string>();
-
-        private List<MusicControl> _MusicControls = new List<MusicControl>();
-        
-        public void MusicResume() => ResumeMusic();
-        public void MusicPause() => PauseMusic();
 
         #region Constructor
 
@@ -114,6 +109,7 @@ namespace PlayniteSounds
                 Directory.CreateDirectory(_gameMusicFilePath);
 
                 SettingsModel = new PlayniteSoundsSettingsViewModel(this);
+                SettingsModel.Settings.PropertyChanged += OnSettingsChanged;
                 Properties = new GenericPluginProperties
                 {
                     HasSettings = true
@@ -124,7 +120,7 @@ namespace PlayniteSounds
                 _musicPlayer.MediaEnded += MediaEnded;
                 _timeLine = new MediaTimeline();
                 //{
-                //    RepeatBehavior = RepeatBehavior.Forever                    
+                //    RepeatBehavior = RepeatBehavior.Forever
                 //};
 
                 _gameMenuItems = new List<GameMenuItem>
@@ -177,7 +173,7 @@ namespace PlayniteSounds
 
         public void UpdateDownloadManager(PlayniteSoundsSettings settings)
             => DownloadManager = new DownloadManager(settings);
-        
+
 
         private static string HelpLine(string baseMessage)
             => $"{SoundFile.DesktopPrefix}{baseMessage} - {SoundFile.FullScreenPrefix}{baseMessage}\n";
@@ -193,9 +189,8 @@ namespace PlayniteSounds
             switch (controlType)
             {
                 case "MusicControl":
-                    _MusicControls.Add(new MusicControl(PlayniteApi, this));
-                    return _MusicControls.Last();
-                default: 
+                    return new MusicControl(SettingsModel.Settings);
+                default:
                     throw new ArgumentException($"Unrecognized controlType '{controlType}' for request '{args.Name}'");
             }
         }
@@ -271,6 +266,8 @@ namespace PlayniteSounds
             Application.Current.MainWindow.StateChanged += OnWindowStateChanged;
             Application.Current.Deactivated += OnApplicationDeactivate;
             Application.Current.Activated += OnApplicationActivate;
+
+            ExtraMetaDataLoaderController.Attach(PlayniteApi, SettingsModel.Settings);
         }
 
         public override void OnApplicationStopped(OnApplicationStoppedEventArgs args)
@@ -320,7 +317,7 @@ namespace PlayniteSounds
                 gameMenuItems.Add(ConstructGameMenuItem(
                     "KHInsider", _ => DownloadMusicForSelectedGames(Source.KHInsider), "|" + Resource.Actions_Download));
             }
-            
+
             gameMenuItems.AddRange(_gameMenuItems);
 
             if (SingleGame())
@@ -357,9 +354,9 @@ namespace PlayniteSounds
             if (defaultFiles.Any())
             {
                 mainMenuItems.Add(new MainMenuItem
-                { 
-                    Description = "-", 
-                    MenuSection = App.MainMenuName + defaultSubMenu 
+                {
+                    Description = "-",
+                    MenuSection = App.MainMenuName + defaultSubMenu
                 });
                 mainMenuItems.AddRange(ConstructItems(ConstructMainMenuItem, defaultFiles, defaultSubMenu + "|"));
             }
@@ -509,6 +506,17 @@ namespace PlayniteSounds
             }
         }
 
+        public void OnSettingsChanged( object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == nameof(SettingsModel.Settings.VideoIsPlaying))
+            {
+                if (SettingsModel.Settings.VideoIsPlaying)
+                    PauseMusic();
+                else
+                    ResumeMusic();
+            }
+        }
+
         private void RestartMusic()
         {
             _closeAudioFilesNextPlay = true;
@@ -616,7 +624,7 @@ namespace PlayniteSounds
             _musicPlayer.Clock.Controller.Stop();
             _musicPlayer.Clock = null;
             _musicPlayer.Close();
-            _MusicControls.ForEach( c => c.CurrentMusicName = string.Empty);
+            SettingsModel.Settings.CurrentMusicName = string.Empty;
         }
 
         private void ForcePlayMusicFromPath(string filePath)
@@ -652,7 +660,7 @@ namespace PlayniteSounds
                 _musicPlayer.Clock = _timeLine.CreateClock();
                 _musicPlayer.Clock.Controller.Begin();
                 _musicEnded = false;
-                _MusicControls.ForEach(c => c.CurrentMusicName = Path.GetFileNameWithoutExtension(filePath));
+                SettingsModel.Settings.CurrentMusicName = Path.GetFileNameWithoutExtension(filePath);
             }
         }
 
@@ -783,7 +791,7 @@ namespace PlayniteSounds
         #region Menu UI
 
         private IEnumerable<TMenuItem> ConstructItems<TMenuItem>(
-            Func<string, Action, string, TMenuItem> menuItemConstructor, 
+            Func<string, Action, string, TMenuItem> menuItemConstructor,
             string[] files,
             string subMenu,
             bool isGame = false)
@@ -797,7 +805,7 @@ namespace PlayniteSounds
                     Resource.ActionsCopyPlayMusicFile, () => ForcePlayMusicFromPath(file), songSubMenu);
                 yield return menuItemConstructor(
                     Resource.ActionsCopyDeleteMusicFile, () => DeleteMusicFile(file, songName, isGame), songSubMenu);
-            }           
+            }
         }
 
         private static GameMenuItem ConstructGameMenuItem(string resource, Action action, string subMenu = "")
@@ -1162,7 +1170,7 @@ namespace PlayniteSounds
 
             if (Directory.Exists(oldSoundFiles))
             {
-                
+
                 var newSoundsPath = Path.Combine(_extraMetaDataFolder, SoundDirectory.Sound);
                 if (Directory.Exists(newSoundsPath))
                 {
@@ -1198,7 +1206,7 @@ namespace PlayniteSounds
             Logger.Info($"Working on Platform: {platformDirectory}");
 
             var platformDirectoryName = GetDirectoryNameFromPath(platformDirectory);
-            
+
             if (platformDirectoryName.Equals(SoundDirectory.Orphans, StringComparison.Ordinal))
             {
                 Logger.Info($"Ignoring directory: {platformDirectoryName}");
@@ -1223,7 +1231,7 @@ namespace PlayniteSounds
             Logger.Info($"Deleting {platformDirectory}...");
             Directory.Delete(platformDirectory);
         }
-        
+
         private void MoveLegacyGameFile(
             string looseGameFile, string platformDirectoryName, string orphanDirectory, IEnumerable<Game> games)
         {
@@ -1255,7 +1263,7 @@ namespace PlayniteSounds
 
         private void DeleteMusicDirectories()
             => PerformDeleteAction(
-                Resource.DialogDeleteMusicDirectory, 
+                Resource.DialogDeleteMusicDirectory,
                 () => SelectedGames.ForEach(g => Try(() => DeleteMusicDirectory(g))));
 
         private void DeleteMusicDirectory(Game game)
@@ -1318,7 +1326,7 @@ namespace PlayniteSounds
 
         private void SelectMusicForPlatform(Platform platform)
         {
-            var playNewMusic = 
+            var playNewMusic =
                 Settings.MusicType is MusicType.Platform
                 && SingleGame()
                 && SelectedGames.First().Platforms.Contains(platform);
@@ -1447,7 +1455,7 @@ namespace PlayniteSounds
                 args = Settings.FFmpegNormalizeArgs;
                 Logger.Info($"Using custom args '{args}' for file '{filePath}' during normalization.");
             }
-                
+
 
             var info = new ProcessStartInfo
             {
@@ -1543,7 +1551,7 @@ namespace PlayniteSounds
             var progressTitle = $"{App.AppName} - {Resource.DialogMessageDownloadingFiles}";
             var progressOptions = new GlobalProgressOptions(progressTitle, true) { IsIndeterminate = false };
 
-            Dialogs.ActivateGlobalProgress(a => Try(() => 
+            Dialogs.ActivateGlobalProgress(a => Try(() =>
             StartDownload(a, games.ToList(), source, progressTitle, albumSelect, songSelect, overwriteSelect)),
                 progressOptions);
         }
@@ -1564,7 +1572,7 @@ namespace PlayniteSounds
 
                 var gameDirectory = CreateMusicDirectory(game);
 
-                var newFilePath = 
+                var newFilePath =
                     DownloadSongFromGame(source, game.Name, gameDirectory, songSelect, albumSelect, overwrite);
 
                 var fileDownloaded = newFilePath != null;
@@ -1633,11 +1641,11 @@ namespace PlayniteSounds
         }
 
         private Album SelectAlbumForGame(
-            Source source, 
-            string gameName, 
-            string strippedGameName, 
+            Source source,
+            string gameName,
+            string strippedGameName,
             string regexGameName,
-            bool albumSelect, 
+            bool albumSelect,
             bool songSelect)
         {
             Album album = null;
@@ -1752,7 +1760,7 @@ namespace PlayniteSounds
                 PlayniteApi.Database.Games.Update(game);
                 return true;
             }
-            
+
             if (!game.TagIds.Contains(tag.Id))
             {
                 game.TagIds.Add(tag.Id);
@@ -1806,10 +1814,10 @@ namespace PlayniteSounds
 
         private bool ShouldPlaySound() => ShouldPlayAudio(Settings.SoundState);
 
-        private bool ShouldPlayMusic() => 
-            _pausers.Count is 0 
-            && _MusicControls.All(c => c.VideoIsPlaying==false)
-            && !_gameRunning 
+        private bool ShouldPlayMusic() =>
+            _pausers.Count is 0
+            && !SettingsModel.Settings.VideoIsPlaying
+            && !_gameRunning
             && ShouldPlayAudio(Settings.MusicState);
 
         private bool ShouldPlayAudio(AudioState state)
@@ -1835,7 +1843,7 @@ namespace PlayniteSounds
         private string GetMusicDirectoryPath(Game game)
             => Path.Combine(_gameMusicFilePath, game.Id.ToString(), SoundDirectory.Music);
 
-        private string CreatePlatformDirectoryPathFromGame(Game game) 
+        private string CreatePlatformDirectoryPathFromGame(Game game)
             => CreatePlatformDirectory(game?.Platforms?.FirstOrDefault()?.Name ?? SoundDirectory.NoPlatform);
 
         private string CreateMusicDirectory(Game game)

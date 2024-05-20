@@ -1,28 +1,28 @@
 ﻿using Playnite.SDK;
 using Playnite.SDK.Controls;
+using PlayniteSounds.Models;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 
-namespace PlayniteSounds.Controls 
+namespace PlayniteSounds.Controls
 {
     public partial class MusicControl : PluginUserControl, INotifyPropertyChanged
     {
-        IPlayniteAPI PlayniteApi;
-        private PlayniteSounds _playniteSounds;
+        private PlayniteSoundsSettings _settings;
 
         static MusicControl()
         {
             TagProperty.OverrideMetadata(typeof(MusicControl), new FrameworkPropertyMetadata(-1, OnTagChanged));
         }
 
-        public MusicControl(IPlayniteAPI PlayniteApi, PlayniteSounds plugin)
+        public MusicControl(PlayniteSoundsSettings settings)
         {
-            this.PlayniteApi = PlayniteApi;
             InitializeComponent();
             DataContext = this;
-            _playniteSounds = plugin;
+            _settings = settings;
+            _settings.PropertyChanged += OnSettingsChanged;
         }
         private static void OnTagChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -38,31 +38,28 @@ namespace PlayniteSounds.Controls
         public RelayCommand<bool> VideoPlayingCommand
             => new RelayCommand<bool>(videoIsPlaying => VideoIsPlaying = videoIsPlaying);
 
-        private string _currentMusicName=string.Empty;
         public string CurrentMusicName
         {
-            get => _currentMusicName;
-            set
-            {
-                _currentMusicName = value;
-                OnPropertyChanged(nameof(CurrentMusicName));
-            }
+            get => _settings.CurrentMusicName;
+            set => _settings.CurrentMusicName = value;
         }
 
-        private bool _videoIsPlaying = false;
         public bool VideoIsPlaying
         {
-            get => _videoIsPlaying;
-            set
-            {
-                _videoIsPlaying = value;
-                if (_videoIsPlaying)
-                    _playniteSounds.MusicPause();
-                else 
-                    _playniteSounds.MusicResume();
+            get => _settings.VideoIsPlaying;
+            set => _settings.VideoIsPlaying = value;
+        }
 
+        public void OnSettingsChanged( object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == nameof(_settings.VideoIsPlaying))
+            {
                 OnPropertyChanged(nameof(VideoPlayingCommand));
                 OnPropertyChanged(nameof(VideoIsPlaying));
+            }
+            else if (args.PropertyName == nameof(_settings.CurrentMusicName))
+            {
+                OnPropertyChanged(nameof(CurrentMusicName));
             }
         }
     }

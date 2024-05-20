@@ -26,15 +26,15 @@ namespace PlayniteSounds.Models
 
         [DontSerialize]
         private string ytDlpPath { get; set; }
-        public string YtDlpPath { 
+        public string YtDlpPath {
             get => ytDlpPath;
             set
-            { 
+            {
                 ytDlpPath = value;
                 OnPropertyChanged();
             }
-         }
-        
+        }
+
         [DontSerialize]
         private string ffmpegPath { get; set; }
         public string FFmpegPath
@@ -46,7 +46,7 @@ namespace PlayniteSounds.Models
                 OnPropertyChanged();
             }
         }
-        
+
         [DontSerialize]
         private string ffmpegNormalizePath { get; set; }
         public string FFmpegNormalizePath
@@ -64,5 +64,29 @@ namespace PlayniteSounds.Models
         public IList<Source> Downloaders { get; set; } = new List<Source> { Source.Youtube };
         public DateTime LastAutoLibUpdateAssetsDownload { get; set; } = DateTime.Now;
         public bool PromptedForMigration { get; set; }
+
+        [DontSerialize]
+        private bool videoIsPlaying { get; set; }
+        [DontSerialize]
+        public bool VideoIsPlaying
+        {
+            get => videoIsPlaying;
+            set {
+                videoIsPlaying = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [DontSerialize]
+        private string currentMusicName { get; set; } = string.Empty;
+        [DontSerialize]
+        public string CurrentMusicName
+        {
+            get => currentMusicName;
+            set {
+                currentMusicName = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }
