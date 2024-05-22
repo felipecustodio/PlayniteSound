@@ -53,7 +53,7 @@ namespace PlayniteSounds
 
         private IDownloadManager DownloadManager;
 
-        private PlayniteSoundsSettingsViewModel SettingsModel { get; }
+        public PlayniteSoundsSettingsViewModel SettingsModel { get; }
 
         private bool _gameRunning;
         private bool _musicEnded;
@@ -267,7 +267,8 @@ namespace PlayniteSounds
             Application.Current.Deactivated += OnApplicationDeactivate;
             Application.Current.Activated += OnApplicationActivate;
 
-            ExtraMetaDataLoaderController.Attach(PlayniteApi, SettingsModel.Settings);
+            if (SettingsModel.Settings.PauseOnTrailer)
+                MediaElementsMonitor.Attach(PlayniteApi, SettingsModel.Settings);
         }
 
         public override void OnApplicationStopped(OnApplicationStoppedEventArgs args)

@@ -2,7 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:playnitesounds="clr-namespace:PlayniteSounds"
              xmlns:common="clr-namespace:PlayniteSounds.Common"
              d:DataContext="{d:DesignInstance Type=playnitesounds:PlayniteSoundsSettingsViewModel}"
@@ -127,6 +127,7 @@
                         </StackPanel>
                         <Slider Name="VolumeSlider" Grid.Row="6" Grid.Column="1" Maximum="100" Value="{Binding Settings.MusicVolume}"  AutoToolTipPlacement="TopLeft" ValueChanged="Slider_ValueChanged" VerticalAlignment="Center"/>
                         <CheckBox Name="ChkPauseOnDeactivate" Grid.Row="8" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PauseOnDeactivate}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkPauseOnDeactivate}"/>
+                        <CheckBox Name="ChkPauseOnTrailer" Grid.Row="9" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PauseOnTrailer}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkPauseOnTrailer}"/>
                         <CheckBox Name="ChkRandomizeOnEverySelect" Grid.Row="10" Grid.ColumnSpan="2" IsChecked="{Binding Settings.RandomizeOnEverySelect}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkRandomizeOnEverySelect}"/>
                         <CheckBox Name="ChkRandomizeOnMusicEnd" Grid.Row="12" Grid.ColumnSpan="2" IsChecked="{Binding Settings.RandomizeOnMusicEnd}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkRandomizeOnMusicEnd}"/>
                         <CheckBox Name="ChkBackgroundNone" Grid.Row="14" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PlayBackupMusic}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkBackup}"/>
@@ -139,22 +140,22 @@
 
                         <DockPanel Margin="0,0,0,10">
                             <TextBlock Text="{DynamicResource LOC_PLAYNITESOUNDS_FF_Path}" DockPanel.Dock="Left" VerticalAlignment="Center" ToolTip="{DynamicResource LOC_PLAYNITESOUNDS_FF_Hint}"/>
-                            <Button Margin="10,0,0,0" DockPanel.Dock="Right" Content="{DynamicResource LOC_PLAYNITESOUNDS_Actions_Download}" 
+                            <Button Margin="10,0,0,0" DockPanel.Dock="Right" Content="{DynamicResource LOC_PLAYNITESOUNDS_Actions_Download}"
                                 Command="{Binding NavigateUrlCommand}"
                                 CommandParameter="https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.7z"
                             />
                             <Button Margin="10,0,0,0" DockPanel.Dock="Right" Content="{DynamicResource LOC_PLAYNITESOUNDS_Browse}" Command="{Binding BrowseForFFmpegFile}" />
-                            <TextBox Margin="10,0,0,0" Text="{Binding Settings.FFmpegPath}" IsReadOnly="True" />
+                            <TextBox Margin="10,0,0,0" Text="{Binding Settings.FFmpegPath}" IsReadOnly="False" />
                         </DockPanel>
 
                         <DockPanel Margin="0,0,0,10">
                             <TextBlock Text="{DynamicResource LOC_PLAYNITESOUNDS_YtDLp_Path}" DockPanel.Dock="Left" VerticalAlignment="Center" ToolTip="{DynamicResource LOC_PLAYNITESOUNDS_YtDLp_Hint}"/>
-                            <Button Margin="10,0,0,0" DockPanel.Dock="Right" Content="{DynamicResource LOC_PLAYNITESOUNDS_Actions_Download}" 
+                            <Button Margin="10,0,0,0" DockPanel.Dock="Right" Content="{DynamicResource LOC_PLAYNITESOUNDS_Actions_Download}"
                                 Command="{Binding NavigateUrlCommand}"
-                                CommandParameter="https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe"        
+                                CommandParameter="https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe"
                             />
                             <Button Margin="10,0,0,0" DockPanel.Dock="Right" Content="{DynamicResource LOC_PLAYNITESOUNDS_Browse}" Command="{Binding BrowseForYtDlpFile}" />
-                            <TextBox Margin="10,0,0,0" Text="{Binding Settings.YtDlpPath}" IsReadOnly="True" />
+                            <TextBox Margin="10,0,0,0" Text="{Binding Settings.YtDlpPath}" IsReadOnly="False" />
                         </DockPanel>
 
                         <DockPanel Margin="0,0,0,10">
@@ -162,17 +163,17 @@
                                    ToolTip="{DynamicResource LOC_PLAYNITESOUNDS_FFNorm_Hint}"
                                    VerticalAlignment="Center" DockPanel.Dock="Left" />
 
-                            <Button Margin="10,0,0,0" DockPanel.Dock="Right" Content="{DynamicResource LOC_PLAYNITESOUNDS_Actions_Download}" 
+                            <Button Margin="10,0,0,0" DockPanel.Dock="Right" Content="{DynamicResource LOC_PLAYNITESOUNDS_Actions_Download}"
                                    Command="{Binding NavigateUrlCommand}"
                                    IsEnabled="False"
                                    CommandParameter="https://github.com/slhck/ffmpeg-normalize/releases/latest/download/yt-dlp.exe"
                             />
-                            
+
                             <Button Margin="10,0,0,0"
                                     DockPanel.Dock="Right"
-                                    Content="{DynamicResource LOC_PLAYNITESOUNDS_Browse}" 
+                                    Content="{DynamicResource LOC_PLAYNITESOUNDS_Browse}"
                                     Command="{Binding BrowseForFFmpegNormalizeFile}"/>
-                            
+
                             <TextBlock VerticalAlignment="Center" Margin="10,0,0,0"
                                     DockPanel.Dock="Right"
                                     ToolTip="{DynamicResource LOC_PLAYNITESOUNDS_FFNorm_Doc}">

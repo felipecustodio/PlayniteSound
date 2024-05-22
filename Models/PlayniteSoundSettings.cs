@@ -88,5 +88,7 @@ namespace PlayniteSounds.Models
                 OnPropertyChanged();
             }
         }
+
+        public bool PauseOnTrailer { get; set; } = true;
     }
 }
