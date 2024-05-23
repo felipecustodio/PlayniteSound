@@ -1,12 +1,11 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Playnite.SDK.Data;
 
 namespace PlayniteSounds.Downloaders
 {
@@ -33,8 +32,8 @@ namespace PlayniteSounds.Downloaders
         private const string youtubeVisitorDataPath = "..visitorData";
         private const string youtubeplaylistVideoPath = "..playlistPanelVideoRenderer";
 
-        private const string searchTypePlaylist = "EgIQAw%3D%3D";        
-          
+        private const string searchTypePlaylist = "EgIQAw%3D%3D";
+
         public YoutubeClient(HttpClient httpClient)
         {
             _items = new List<YoutubeItem>();
@@ -96,15 +95,18 @@ namespace PlayniteSounds.Downloaders
 
         private void ParseSearchResult(string json)
         {
-            JObject jo = JObject.Parse(json);
-            var playlists = jo.SelectTokens(youtubeItemsListPathPlaylist).ToList();
-            playlists.ForEach(x => _items.Add(new YoutubeItem
-            {
-                Id = x.SelectToken("playlistId")?.ToString(),
-                Title = x.SelectToken("title.simpleText")?.ToString(),
-                ThumbnailUrl = new Uri(x.SelectToken("thumbnails[0].thumbnails[0].url")?.ToString()),
-                Count = uint.Parse(x.SelectToken("videoCount").ToString())
-            }));
+            dynamic jo = Serialization.FromJson<dynamic>(json);
+            var playlists = new List<dynamic>(jo.SelectTokens(youtubeItemsListPathPlaylist));
+
+            foreach (var x in playlists) {
+                _items.Add(new YoutubeItem
+                {
+                    Id = x.SelectToken("playlistId")?.ToString(),
+                    Title = x.SelectToken("title.simpleText")?.ToString(),
+                    ThumbnailUrl = new Uri(x.SelectToken("thumbnails[0].thumbnails[0].url")?.ToString()),
+                    Count = uint.Parse(x.SelectToken("videoCount").ToString())
+                });
+            }
 
             continuationToken = jo.SelectToken(youtubeContinuationTokenPath)?.ToString();
         }
@@ -173,10 +175,10 @@ namespace PlayniteSounds.Downloaders
 
         private int ParsePlaylist(string json)
         {
-            JObject jo = JObject.Parse(json);
+            dynamic jo = Serialization.FromJson<dynamic>(json);
 
             visitorData = jo.SelectToken(youtubeVisitorDataPath)?.ToString();
-            var videos = jo.SelectTokens(youtubeplaylistVideoPath).ToList();
+            var videos = new List<dynamic>(jo.SelectTokens(youtubeplaylistVideoPath));
 
             var newItems = 0;
             foreach (var x in videos)
@@ -198,7 +200,7 @@ namespace PlayniteSounds.Downloaders
             }
             return newItems;
         }
-     
+
         #endregion
 
     }
