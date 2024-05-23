@@ -1,12 +1,12 @@
 # Playnite Sounds Extension
 ![DownloadCountTotal](https://img.shields.io/github/downloads/joyrider3774/PlayniteSound/total?label=total%20downloads&style=plastic) ![DownloadCountLatest](https://img.shields.io/github/downloads/joyrider3774/PlayniteSound/latest/total?style=plastic) ![LatestVersion](https://img.shields.io/github/v/tag/joyrider3774/PlayniteSound?label=Latest%20version&style=plastic) ![License](https://img.shields.io/github/license/joyrider3774/PlayniteSound?style=plastic)
 
-Playnite Sounds is an extension to play audio files during Playnite events. 
+Playnite Sounds is an extension to play audio files during Playnite events.
 It can only play WAV audio files and mp3 for music, nothing else.
 
 [Latest Release](https://github.com/joyrider3774/PlayniteSound/releases/latest)
 
-## Buy me a "koffie" if you feel like supporting 
+## Buy me a "koffie" if you feel like supporting
 I do everything in my spare time for free, if you feel something aided you and you want to support me, you can always buy me a "koffie" as we say in dutch, no obligations whatsoever...
 
 <a href='https://ko-fi.com/Q5Q3BKI5S' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
@@ -14,7 +14,7 @@ I do everything in my spare time for free, if you feel something aided you and y
 ## Audio Files
 
 ### Generic Info
-There are 2 seperate set of sound files. Audio Files starting with 'D_' and files starting with 'F_'. 
+There are 2 seperate set of sound files. Audio Files starting with 'D_' and files starting with 'F_'.
 The 'D_' files are the audio files for desktop mode, the 'F_' files for fullscreen mode.
 If you don't want to hear a certain file you can just delete the wav file of the event you don't want to hear.
 You can also change the files with your own files. Be sure to use the 'Open Audio Files Folder' menu for doing so.
@@ -68,9 +68,9 @@ Thanks to the following people who have contributed with translations:
 * Italian: Federico Pezzuolo (3XistencE-STUDIO), StarFang208
 * German: kristheb
 * Hungarian: myedition8
-* Porutgese, Brazillian: atemporal_ (Atemporal), JCraftPlay 
+* Porutgese, Brazillian: atemporal_ (Atemporal), JCraftPlay
 * Ukrainian: SmithMD24
-* Norwegian: MeatBoy 
+* Norwegian: MeatBoy
 * Czech: SilverRoll (silveroll)
 * Korean: Min-Ki Jeong
 * Chinese Simplified: ATNewHope
@@ -89,18 +89,27 @@ Extension expose custom control to manage Music playing: ```Sounds_MusicControl`
 
 ### Show current Music name
 
-Current Music filename (no path, no extension) is exposed via Content.CurrentMusicName property. you may use in via binding:
+Current Music filename (no path, no extension) is exposed via Content.CurrentMusicName property and {PluginSettings Plugin=Sounds Path=CurrentMusicName} you may use in via binding:
 
 ```xml
     <ContentControl x:Name="Sounds_MusicControl" />
-    <TextBlock 
-        Text="{Binding ElementName=Sounds_MusicControl, Path=Content.CurrentMusicName, FallbackValue='----'}"
+    <TextBlock
+        Text="{Binding ElementName=Sounds_MusicControl, Path=Content.CurrentMusicName}"
     />
 ```
-)
+
+or
+
+```xml
+    <TextBlock
+        Text="{PluginSettings Plugin=Sounds, Path=CurrentMusicName}"
+    />
+```
+
+
 
 ### Pause/Resume during trailer playback
-Control track Tag property manipulation and pause Music on 'True' value and Resume on false.
+Theme may control music track via Tag property manipulation and pause Music on 'True' value and Resume on false.
 <details>
   <summary>Here how it can be implemented in theme GameDetail.xaml</summary>
 
@@ -109,7 +118,7 @@ Control track Tag property manipulation and pause Music on 'True' value and Resu
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type GameDetails}">
-                    <Grid> 
+                    <Grid>
                         ...
                         <ContentControl x:Name="Sounds_MusicControl" />
                         ...
@@ -119,27 +128,27 @@ Control track Tag property manipulation and pause Music on 'True' value and Resu
                         <DataTrigger
                             Binding="{Binding ElementName=ExtraMetadataLoader_VideoLoaderControl_NoControls_Sound, Path=Content.IsPlayerMuted, FallbackValue={StaticResource False}}"
                             Value="{StaticResource False}">
-                            <Setter 
-                                Property="Tag" 
-                                Value="{Binding ElementName=ExtraMetadataLoader_VideoLoaderControl_NoControls_Sound, Path=Content.SettingsModel.Settings.IsVideoPlaying}" 
+                            <Setter
+                                Property="Tag"
+                                Value="{Binding ElementName=ExtraMetadataLoader_VideoLoaderControl_NoControls_Sound, Path=Content.SettingsModel.Settings.IsVideoPlaying}"
                                 TargetName="Sounds_MusicControl" />
                         </DataTrigger>
 
                         <DataTrigger
                             Binding="{Binding ElementName=ExtraMetadataLoader_VideoLoaderControl_NoControls_Sound, Path=Content.IsPlayerMuted, FallbackValue={StaticResource False}}"
                             Value="{StaticResource True}">
-                            <Setter 
-                                Property="Tag" 
-                                Value="False" 
+                            <Setter
+                                Property="Tag"
+                                Value="False"
                                 TargetName="Sounds_MusicControl" />
-                        </DataTrigger>           
-                        
+                        </DataTrigger>
+
                         <DataTrigger
                             Binding="{Binding ElementName=PART_ElemGameDetails, Path=Visibility}"
                             Value="Collapsed">
-                            <Setter 
-                                Property="Tag" 
-                                Value="False" 
+                            <Setter
+                                Property="Tag"
+                                Value="False"
                                 TargetName="Sounds_MusicControl" />
                         </DataTrigger>
                     </ControlTemplate.Triggers>
