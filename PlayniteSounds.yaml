@@ -1,5 +1,12 @@
 AddonId: 'Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb'
 Packages:
+  - Version: 5.7.4
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2024-05-27
+    PackageUrl: https://github.com/ashpynov/PlayniteSound/releases/download/v5.7.4/Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb_5_7_4.pext
+    Changelog:
+      - Better handling startup splash video
+      - Reduced monitoring workload and better keeping music muted
   - Version: 5.7.3
     RequiredApiVersion: 6.11.0
     ReleaseDate: 2024-05-23

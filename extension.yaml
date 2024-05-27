@@ -1,7 +1,7 @@
 ﻿Id: Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb
 Name: Playnite Sounds Mod
 Author: ashpynov, cnapolit, Joyrider3774
-Version: 5.7.3
+Version: 5.7.4
 Module: PlayniteSounds.dll
 Type: GenericPlugin
 Icon: icon.png
@@ -14,3 +14,7 @@ Links:
       Url: https://discord.com/channels/365863063296933888/808419165311467630
     - Name: Bug tracker
       Url: https://github.com/ashpynov/PlayniteSound/issues
+    - Name: Ko-fi for Tips
+      Url: https://ko-fi.com/ashpynov
+    - Name: Boosty for Tips
+      Url: https://boosty.to/ashpynov/donate

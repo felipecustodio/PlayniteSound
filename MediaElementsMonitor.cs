@@ -47,7 +47,7 @@ namespace PlayniteSounds
             EventManager.RegisterClassHandler(typeof(MediaElement), MediaElement.MediaOpenedEvent, new RoutedEventHandler(MediaElement_Opened));
 
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromTicks(100);
+            timer.Interval = TimeSpan.FromMilliseconds(10);
             timer.Tick += Timer_Tick;
         }
 
@@ -73,7 +73,6 @@ namespace PlayniteSounds
         }
         static private void Timer_Tick(object sender, EventArgs e)
         {
-
             bool someIsPlaying = false;
             var mediaElements = GetAllMediaElements(Application.Current.MainWindow);
 
@@ -120,11 +119,13 @@ namespace PlayniteSounds
             if (mediaElementPositions.Count == 0)
             {
                 timer.Stop();
+                settings.VideoIsPlaying = false;
             }
         }
 
         static private void MediaElement_Opened(object sender, RoutedEventArgs e)
         {
+            Timer_Tick(sender, e);
             timer.Start();
         }
     }

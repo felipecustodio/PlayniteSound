@@ -163,6 +163,8 @@ namespace PlayniteSounds
                     SourceName = "Sounds",
                     SettingsRoot = $"{nameof(SettingsModel)}.{nameof(SettingsModel.Settings)}"
                 });
+                if (SettingsModel.Settings.PauseOnTrailer)
+                    MediaElementsMonitor.Attach(PlayniteApi, SettingsModel.Settings);
 
             }
             catch (Exception e)
@@ -266,9 +268,6 @@ namespace PlayniteSounds
             Application.Current.MainWindow.StateChanged += OnWindowStateChanged;
             Application.Current.Deactivated += OnApplicationDeactivate;
             Application.Current.Activated += OnApplicationActivate;
-
-            if (SettingsModel.Settings.PauseOnTrailer)
-                MediaElementsMonitor.Attach(PlayniteApi, SettingsModel.Settings);
         }
 
         public override void OnApplicationStopped(OnApplicationStoppedEventArgs args)
@@ -598,9 +597,16 @@ namespace PlayniteSounds
 
         private void ResumeMusic()
         {
-            if (ShouldPlayMusic() && _musicPlayer.Clock != null)
+            if (ShouldPlayMusic())
             {
-                Try(_musicPlayer.Clock.Controller.Resume);
+                if (_musicPlayer.Clock != null)
+                {
+                    Try(_musicPlayer.Clock.Controller.Resume);
+                }
+                else
+                {
+                    PlayMusicBasedOnSelected();
+                }
             }
         }
 
