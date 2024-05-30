@@ -1,15 +1,18 @@
 # Playnite Sounds Extension
-![DownloadCountTotal](https://img.shields.io/github/downloads/joyrider3774/PlayniteSound/total?label=total%20downloads&style=plastic) ![DownloadCountLatest](https://img.shields.io/github/downloads/joyrider3774/PlayniteSound/latest/total?style=plastic) ![LatestVersion](https://img.shields.io/github/v/tag/joyrider3774/PlayniteSound?label=Latest%20version&style=plastic) ![License](https://img.shields.io/github/license/joyrider3774/PlayniteSound?style=plastic)
+![DownloadCountTotal](https://img.shields.io/github/downloads/ashpynov/PlayniteSound/total?label=total%20downloads&style=plastic) ![DownloadCountLatest](https://img.shields.io/github/downloads/ashpynov/PlayniteSound/latest/total?style=plastic) ![LatestVersion](https://img.shields.io/github/v/tag/ashpynov/PlayniteSound?label=Latest%20version&style=plastic) ![License](https://img.shields.io/github/license/ashpynov/PlayniteSound?style=plastic)
 
 Playnite Sounds is an extension to play audio files during Playnite events.
 It can only play WAV audio files and mp3 for music, nothing else.
 
-[Latest Release](https://github.com/joyrider3774/PlayniteSound/releases/latest)
+[Latest Release](https://github.com/ashpynov/PlayniteSound/releases/latest)
 
-## Buy me a "koffie" if you feel like supporting
+## If you feel like supporting
 I do everything in my spare time for free, if you feel something aided you and you want to support me, you can always buy me a "koffie" as we say in dutch, no obligations whatsoever...
 
-<a href='https://ko-fi.com/Q5Q3BKI5S' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+<a href='https://ko-fi.com/ashpynov' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
+If you may not use Ko-Fi in you country, it should not stop you! On [boosty](https://boosty.to/ashpynov/donate) you may support me and other creators.
+
 
 ## Audio Files
 
@@ -42,22 +45,6 @@ SFXR: https://www.drpetter.se/project_sfxr.html
 
 Audacity: https://www.audacityteam.org/
 
-### Example video
-[![Playnite Sound Example Video](http://img.youtube.com/vi/zXzSdLrOmtw/0.jpg)](http://www.youtube.com/watch?v=zXzSdLrOmtw "Playnite Sound Example Video")
-
-### Playnite Sound V2.0 Release Video
-[![Playnite Sound V2.0 Release Video](http://img.youtube.com/vi/iTZ9JbswN3M/0.jpg)](https://youtu.be/iTZ9JbswN3M "Playnite Sound V2.0 Release Video")
-
-### Playnite Sound V3.0 Release Video
-[![Playnite Sound V2.0 Release Video](http://img.youtube.com/vi/NL1c7puTPz8/0.jpg)](https://youtu.be/NL1c7puTPz8 "Playnite Sound V3.0 Release Video")
-
-### Playnite Sound V4.0 Release
-* Playnite 9 Support
-* First Platform will be used for games having multiple platforms set !!!
-* Be aware platform "PC" changed to "PC (Windows)" in playnite 9 so change your music folder for that platform accordingly in extension data folder.
-* Updated Localizations
-
-
 ## Translation
 The project is translatable on [Crowdin](https://crowdin.com/project/playnite-game-speak)
 
@@ -77,6 +64,7 @@ Thanks to the following people who have contributed with translations:
 * Arabic: X4Lo
 
 ## Credits
+* Original Playnite Sound Plugin by [joyrider3774](https://github.com/joyrider3774)
 * Used Icon made by [Freepik](http://www.freepik.com/)
 * Original Localization file loader by [Lacro59](https://github.com/Lacro59)
 * Sound Manager by [dfirsht](https://github.com/dfirsht)
