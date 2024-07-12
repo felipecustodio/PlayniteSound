@@ -1,5 +1,13 @@
 AddonId: 'Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb'
 Packages:
+  - Version: 5.7.5
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2024-07-12
+    PackageUrl: https://github.com/ashpynov/PlayniteSound/releases/download/v5.7.5/Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb_5_7_5.pext
+    Changelog:
+      - Suppressed Native Fullscreen background music. Now PlayniteSound Mod background music volume may be controled via Main Menu -> Audio -> Background volume
+      - Settings `Mute on deactivation` now sync with Fullscreen Main Menu -> `Mute on deactivation` checkbox.
+      - New icon by Mike Aniki
   - Version: 5.7.4
     RequiredApiVersion: 6.11.0
     ReleaseDate: 2024-05-27
@@ -21,7 +29,6 @@ Packages:
       - Pause music during Vide Trailers or Video Splash with sounds playback
       - Redesigned download from Youtube in favor to in-house search an YT-DLP downloading
       - Exposed control and interface to visualise current plaing music by theme
-
   - Version: 5.6
     RequiredApiVersion: 6.4.0
     ReleaseDate: 2022-10-31

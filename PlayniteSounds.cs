@@ -8,6 +8,8 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Input;
+using System.Runtime.InteropServices;
 using System.Media;
 using System.ComponentModel;
 using Playnite.SDK.Events;
@@ -24,6 +26,16 @@ using PlayniteSounds.Controls;
 
 namespace PlayniteSounds
 {
+    class SDL_mixer
+    {
+        const string nativeLibName = "SDL2_mixer";
+
+        [DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Mix_HaltMusic();
+        [DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void Mix_FreeMusic(IntPtr music);
+    }
+
     public class PlayniteSounds : GenericPlugin
     {
         public bool ReloadMusic { get; set; }
@@ -80,6 +92,7 @@ namespace PlayniteSounds
         private readonly List<MainMenuItem> _mainMenuItems;
 
         private ISet<string> _pausers = new HashSet<string>();
+        static public dynamic FullscreenSettings;
 
         #region Constructor
 
@@ -87,6 +100,11 @@ namespace PlayniteSounds
         {
             try
             {
+                FullscreenSettings = PlayniteApi.ApplicationSettings.Fullscreen
+                    .GetType()
+                    .GetField("settings", BindingFlags.NonPublic | BindingFlags.Instance)
+                    .GetValue(PlayniteApi.ApplicationSettings.Fullscreen);
+
                 SoundFile.ApplicationInfo = PlayniteApi.ApplicationInfo;
 
                 _extraMetaDataFolder = Path.Combine(api.Paths.ConfigurationPath, SoundDirectory.ExtraMetaData);
@@ -166,10 +184,43 @@ namespace PlayniteSounds
                 if (SettingsModel.Settings.PauseOnTrailer)
                     MediaElementsMonitor.Attach(PlayniteApi, SettingsModel.Settings);
 
+                SupressNativeFulscreenMusic();
             }
             catch (Exception e)
             {
                 HandleException(e);
+            }
+        }
+
+        private void SupressNativeFulscreenMusic()
+        {
+            if ( PlayniteApi.ApplicationInfo.Mode != ApplicationMode.Fullscreen
+                || SettingsModel.Settings.MusicState == AudioState.Desktop)
+                return;
+
+            dynamic mainModel = PlayniteApi.MainView
+                .GetType()
+                .GetField("mainModel", BindingFlags.NonPublic | BindingFlags.Instance)
+                .GetValue(PlayniteApi.MainView);
+
+            dynamic backgroundMusicProperty = mainModel.App
+                .GetType()
+                .GetProperty("BackgroundMusic");
+
+            IntPtr currentMusic = (IntPtr)backgroundMusicProperty.GetValue(null);
+            if (currentMusic != new IntPtr(0))
+            {
+                // stop music
+                SDL_mixer.Mix_HaltMusic();
+                SDL_mixer.Mix_FreeMusic(currentMusic);
+                backgroundMusicProperty.GetSetMethod(true).Invoke(null, new[] { new IntPtr(0) as object});
+            }
+        }
+        private void Fullscreen_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(FullscreenSettings.BackgroundVolume))
+            {
+                ResetMusicVolume();
             }
         }
 
@@ -268,6 +319,18 @@ namespace PlayniteSounds
             Application.Current.MainWindow.StateChanged += OnWindowStateChanged;
             Application.Current.Deactivated += OnApplicationDeactivate;
             Application.Current.Activated += OnApplicationActivate;
+
+            dynamic ctx = Application.Current.MainWindow.DataContext;
+            (ctx.AppSettings.Fullscreen as INotifyPropertyChanged).PropertyChanged += Fullscreen_PropertyChanged;
+
+            // Application.Current.MainWindow.KeyDown += (_, e) =>
+            // {
+            //     if (e.Key == Key.MediaNextTrack)
+            //     {
+            //         PlayMusicBasedOnSelected();
+            //         e.Handled = true;
+            //     }
+            // };
         }
 
         public override void OnApplicationStopped(OnApplicationStoppedEventArgs args)
@@ -530,8 +593,17 @@ namespace PlayniteSounds
 
         public void ResetMusicVolume()
         {
-            if (_musicPlayer != null)
+            if (_musicPlayer != null && _musicPlayer.Volume != Settings.MusicVolume )
             {
+                if (Settings.MusicVolume == 0)
+                {
+                    PauseMusic();
+                }
+                else if (_musicPlayer.Volume == 0)
+                {
+                    ResumeMusic();
+                }
+
                 _musicPlayer.Volume = Settings.MusicVolume / 100.0;
             }
         }
@@ -1823,6 +1895,7 @@ namespace PlayniteSounds
 
         private bool ShouldPlayMusic() =>
             _pausers.Count is 0
+            && SettingsModel.Settings.MusicVolume > 0
             && !SettingsModel.Settings.VideoIsPlaying
             && !_gameRunning
             && ShouldPlayAudio(Settings.MusicState);
