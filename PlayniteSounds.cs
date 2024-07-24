@@ -1915,7 +1915,7 @@ namespace PlayniteSounds
 
         private bool IsDesktop() => PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Desktop;
 
-        private bool SingleGame() => SelectedGames.Count() == 1;
+        private bool SingleGame() => SelectedGames?.Count() == 1;
 
         private string GetCurrentFilterDirectoryPath()
             => Path.Combine(_filterMusicFilePath, PlayniteApi.MainView.GetActiveFilterPreset().ToString());
