@@ -1,5 +1,11 @@
 AddonId: 'Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb'
 Packages:
+  - Version: 5.7.9
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2024-10-01
+    PackageUrl: https://github.com/ashpynov/PlayniteSound/releases/download/v5.7.9/Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb_5_7_9.pext
+    Changelog:
+      - Crash on fullscreen (#7)
   - Version: 5.7.8
     RequiredApiVersion: 6.11.0
     ReleaseDate: 2024-10-01

@@ -710,7 +710,7 @@ namespace PlayniteSounds
 
             var changedSelection = !musicFiles.Contains(_prevMusicFileName);
 
-            if (changedSelection || (musicFiles.Length > 1 && (Settings.RandomizeOnEverySelect || musicEndRandom)))
+            if ((changedSelection && musicFiles.Length > 0) || (musicFiles.Length > 1 && (Settings.RandomizeOnEverySelect || musicEndRandom)))
             {
                 ReloadMusic = true;
                 do
