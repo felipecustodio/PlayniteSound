@@ -121,4 +121,12 @@
     <sys:String x:Key="LOC_PLAYNITESOUNDS_Migrate">It appears the Playnite Sounds file layout is outdated. These files must be moved for Sounds to function. Would you like to migrate them?</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_CreateBackup">This process may fail. Would you like to select a backup location for the Sounds files?</sys:String>
 
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeSame">Same as in Game List</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_DetailsMusicType">at Fullscreen Mode Game Details:</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkCollectFromGames">Use games music collection for Platform, Filter or Default</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_SearchingForAlbums">Searching for albums</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_ReadingSongs">Reading song list</sys:String>
+
+
+
 </ResourceDictionary>

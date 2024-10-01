@@ -120,5 +120,11 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_Migrate">Похоже, что структура файлов Playnite Sounds устарела. Эти файлы должны быть перемещены для правильной работы звуков. Хотите выполнить миграцию?</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_CreateBackup">Этот процесс может завершиться неудачей. Хотите выбрать местоположение для резервной копии файлов звуков?</sys:String>
 
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeSame">Та же что и в списке игр</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_DetailsMusicType">в деталях игры:</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkCollectFromGames">Использовать музыку из всех аналогичных игр для Платформы, Фильтра или По умолчанию</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_SearchingForAlbums">Поиск альбомов</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_ReadingSongs">Загрузка списка мелодий</sys:String>
+
 
 </ResourceDictionary>

@@ -1,14 +1,56 @@
 ﻿using Playnite.SDK.Data;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Windows.Media.TextFormatting;
 
 namespace PlayniteSounds.Models
 {
     public class PlayniteSoundsSettings: ObservableObject
     {
-        public AudioState MusicState { get; set; } = AudioState.Always;
+        private AudioState _musicState = AudioState.Always;
+        public AudioState MusicState
+        {
+            get => _musicState;
+            set
+            {
+                _musicState = value;
+                OnPropertyChanged();
+                OnPropertyChanged("DetailsMusicTypeVisibility");
+            }
+        }
+        [DontSerialize]
+        public bool MusicOnFullScreen { get => MusicState == AudioState.Always || MusicState == AudioState.Fullscreen; }
         public AudioState SoundState { get; set; } = AudioState.Always;
-        public MusicType MusicType { get; set; } = MusicType.Game;
+
+        private MusicType _musicType = MusicType.Game;
+        public MusicType MusicType
+        {
+            get => _musicType;
+            set
+            {
+                _musicType = value;
+                OnPropertyChanged();
+                OnPropertyChanged("DetailsMusicTypeVisibility");
+            }
+        }
+
+        public MusicType DetailsMusicType { get; set; } = MusicType.Same;
+
+        public MusicType ChoosenMusicType
+        {
+            get => !GameDetailsVisible ? MusicType : DetailsMusicType == MusicType.Same ? MusicType : DetailsMusicType;
+        }
+
+        [DontSerialize]
+        public string DetailsMusicTypeVisibility
+        {
+            get =>(
+                MusicState != AudioState.Never
+             && MusicState != AudioState.Desktop
+             ) ? "Visible" : "Collapsed"
+            ;
+        }
 
         [DontSerialize]
         public int MusicVolume
@@ -108,5 +150,22 @@ namespace PlayniteSounds.Models
         }
 
         public bool PauseOnTrailer { get; set; } = true;
+
+        public bool CollectFromGames { get; set; } = false;
+
+        [DontSerialize]
+        private bool previewIsPlaying { get; set; }
+        [DontSerialize]
+        public bool PreviewIsPlaying
+        {
+            get => previewIsPlaying;
+            set {
+                previewIsPlaying = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [DontSerialize]
+        public bool GameDetailsVisible { get; set; } = false;
     }
 }

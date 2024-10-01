@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Playnite.SDK.Data;
+using PlayniteSounds.ViewModels;
 
 namespace PlayniteSounds.Downloaders
 {
@@ -44,16 +45,23 @@ namespace PlayniteSounds.Downloaders
 
         private string continuationToken = null;
 
-        public List<YoutubeItem> Search(string searchQuery, int maxNumber = 20)
+        public List<YoutubeItem> Search(string searchQuery, int maxNumber = 20, CancellationToken cancellationToken = default)
         {
             continuationToken = null;
             _items = new List<YoutubeItem>();
-
-            do
+            try
             {
-                var result = GetSearchResponseAsync(searchQuery, searchTypePlaylist, continuationToken).Result;
-                ParseSearchResult(result);
-            } while (continuationToken != null && continuationToken != "" && Results.Count() < maxNumber);
+                do
+                {
+                    var result = GetSearchResponseAsync(searchQuery, searchTypePlaylist, continuationToken, cancellationToken).Result;
+                    ParseSearchResult(result);
+                    MusicSelectionViewModel.SetProgress(Results.Count(), maxNumber);
+                } while (continuationToken != null && continuationToken != "" && Results.Count() < maxNumber);
+            }
+            catch (Exception e)
+            {
+                PlayniteSounds.HandleException(e, cancellationToken);
+            }
             return Results;
         }
 
@@ -119,7 +127,7 @@ namespace PlayniteSounds.Downloaders
         private int lastVideoIndex = 0;
         private string visitorData = null;
 
-        public List<YoutubeItem> Playlist(string playlistId)
+        public List<YoutubeItem> GetPlaylist(string playlistId, CancellationToken cancellationToken = default)
         {
             _items = new List<YoutubeItem>();
             var encounteredIds = new HashSet<string>();
@@ -127,11 +135,19 @@ namespace PlayniteSounds.Downloaders
             lastVideoIndex = 0;
             visitorData = null;
             string result;
-            do
+            try
             {
-                result = GetPlaylistNextResponseAsync(playlistId, lastVideoId, lastVideoIndex, visitorData).Result;
+                do
+                {
+                    result = GetPlaylistNextResponseAsync(playlistId, lastVideoId, lastVideoIndex, visitorData, cancellationToken).Result;
 
-            } while (ParsePlaylist(result) > 0);
+                } while (ParsePlaylist(result) > 0);
+            }
+            catch (Exception e)
+            {
+                if (!cancellationToken.IsCancellationRequested)
+                    PlayniteSounds.HandleException(e);
+            }
 
             return Results;
         }
@@ -188,9 +204,22 @@ namespace PlayniteSounds.Downloaders
                     Id = x.SelectToken("videoId")?.ToString(),
                     Title = x.SelectToken("title.simpleText")?.ToString(),
                     ThumbnailUrl = new Uri(x.SelectToken("thumbnail.thumbnails[0].url")?.ToString()),
-                    Duration = TimeSpan.Parse(x.SelectToken("lengthText.simpleText")?.ToString()),
                     Index = (int)x.SelectToken("navigationEndpoint.watchEndpoint.index")
                 };
+
+                if (TimeSpan.TryParseExact(
+                    x.SelectToken("lengthText.simpleText")?.ToString(),
+                    new string[] { "m\\:s", "h\\:m\\:\\s"},
+                    null,
+                    out TimeSpan duration))
+                {
+                    item.Duration = duration;
+                }
+                else
+                {
+                    item.Duration = TimeSpan.Parse("00:00");
+                }
+
                 if (!encounteredIds.Add(item.Id))
                     continue;
                 newItems++;

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:playnitesounds="clr-namespace:PlayniteSounds"
              xmlns:common="clr-namespace:PlayniteSounds.Common"
+             xmlns:models="clr-namespace:PlayniteSounds.Models"
              d:DataContext="{d:DesignInstance Type=playnitesounds:PlayniteSoundsSettingsViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="460">
@@ -70,10 +71,12 @@
                 <GroupBox Header="{DynamicResource LOC_PLAYNITESOUNDS_Settings}" Grid.Row="0" Grid.ColumnSpan="2"  Margin="0,5,0,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="220"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="5"/>
                             <RowDefinition/>
                             <RowDefinition Height="5"/>
                             <RowDefinition/>
@@ -109,13 +112,27 @@
                             <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbItemFullscreen}"/>
                             <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbItemDesktopFullscreen}"/>
                         </ComboBox>
-                        <Label Grid.Row="2" Name="LblMusicType" Content="{DynamicResource LOC_PLAYNITESOUNDS_MusicType}" d:LayoutOverrides="VerticalAlignment"/>
-                        <ComboBox Grid.Row="2" Grid.Column="1" Name="CmbMusicType" SelectedIndex="{Binding Settings.MusicType, Converter={common:MusicTypeConverter}}" Height="20">
-                            <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusic}"/>
-                            <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusicPlatform}"/>
-                            <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusicPlatformGame}"/>
-                            <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeFilter}"/>
-                        </ComboBox>
+                        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal"  >
+                            <StackPanel Orientation="Horizontal">
+                                <Label Width="220" Content="{DynamicResource LOC_PLAYNITESOUNDS_MusicType}" d:LayoutOverrides="VerticalAlignment"/>
+                                <ComboBox MinWidth="220" Name="CmbMusicType" SelectedValuePath="Tag"  SelectedValue="{Binding Settings.MusicType, Mode=TwoWay}" Height="20">
+                                    <ComboBoxItem Tag="{x:Static models:MusicType.Default}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusic}"/>
+                                    <ComboBoxItem Tag="{x:Static models:MusicType.Platform}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusicPlatform}"/>
+                                    <ComboBoxItem Tag="{x:Static models:MusicType.Game}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusicPlatformGame}"/>
+                                    <ComboBoxItem Tag="{x:Static models:MusicType.Filter}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeFilter}"/>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel  Orientation="Horizontal" Visibility="{Binding Settings.DetailsMusicTypeVisibility}">
+                                <Label Margin="20,0,10,0" Name="LblDetailsMusicType" Content="{DynamicResource LOC_PLAYNITESOUNDS_DetailsMusicType}" d:LayoutOverrides="VerticalAlignment"/>
+                                <ComboBox MinWidth="220" Name="CmbDetailsMusicType" SelectedValuePath="Tag"  SelectedValue="{Binding Settings.DetailsMusicType, Mode=TwoWay}" Height="20">
+                                    <ComboBoxItem Tag="{x:Static models:MusicType.Same}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeSame}"/>
+                                    <ComboBoxItem Tag="{x:Static models:MusicType.Default}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusic}"/>
+                                    <ComboBoxItem Tag="{x:Static models:MusicType.Platform}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusicPlatform}"/>
+                                    <ComboBoxItem Tag="{x:Static models:MusicType.Game}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusicPlatformGame}"/>
+                                    <ComboBoxItem Tag="{x:Static models:MusicType.Filter}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeFilter}"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </StackPanel>
                         <Label Grid.Row="4" Name="LblStopMusic" Content="{DynamicResource LOC_PLAYNITESOUNDS_StopMusic}" d:LayoutOverrides="VerticalAlignment"/>
                         <ComboBox Grid.Row="4" Grid.Column="1" Name="CmbStopMusic" SelectedIndex="{Binding Settings.StopMusic}" Height="20">
                             <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbStopItemIsStarting}"/>
@@ -133,8 +150,9 @@
                         <CheckBox Name="ChkRandomizeOnEverySelect" Grid.Row="12" Grid.ColumnSpan="2" IsChecked="{Binding Settings.RandomizeOnEverySelect}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkRandomizeOnEverySelect}"/>
                         <CheckBox Name="ChkRandomizeOnMusicEnd" Grid.Row="14" Grid.ColumnSpan="2" IsChecked="{Binding Settings.RandomizeOnMusicEnd}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkRandomizeOnMusicEnd}"/>
                         <CheckBox Name="ChkBackgroundNone" Grid.Row="16" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PlayBackupMusic}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkBackup}"/>
-                        <CheckBox Name="ChkTagMissing" Grid.Row="18" Grid.ColumnSpan="2" IsChecked="{Binding Settings.TagMissingEntries}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkTagMissing}"/>
-                        <CheckBox Name="ChkTagNormal" Grid.Row="20" Grid.ColumnSpan="2" IsChecked="{Binding Settings.TagNormalizedGames}" Content="{DynamicResource LOC_PLAYNITESOUNDS_Normalize_Tag}"/>
+                        <CheckBox Name="ChkCollectFromGames" Grid.Row="18" Grid.ColumnSpan="2" IsChecked="{Binding Settings.CollectFromGames}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkCollectFromGames}"/>
+                        <CheckBox Name="ChkTagMissing" Grid.Row="20" Grid.ColumnSpan="2" IsChecked="{Binding Settings.TagMissingEntries}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkTagMissing}"/>
+                        <CheckBox Name="ChkTagNormal" Grid.Row="22" Grid.ColumnSpan="2" IsChecked="{Binding Settings.TagNormalizedGames}" Content="{DynamicResource LOC_PLAYNITESOUNDS_Normalize_Tag}"/>
                     </Grid>
                 </GroupBox>
                 <GroupBox Header="{DynamicResource LOC_PLAYNITESOUNDS_Actions_Download}" Grid.Row="1" Grid.ColumnSpan="2"  Margin="0,5,0,0">

@@ -84,7 +84,7 @@ namespace PlayniteSounds
             }
             catch (Exception e)
             {
-                plugin.HandleException(e);
+                PlayniteSounds.HandleException(e);
             }
         }
 
@@ -97,7 +97,7 @@ namespace PlayniteSounds
             }
             catch (Exception e)
             {
-                _plugin.HandleException(e);
+                PlayniteSounds.HandleException(e);
             }
         }
 
@@ -117,8 +117,9 @@ namespace PlayniteSounds
 
                 var musicTypeChanged = Settings.MusicType != EditingClone.MusicType;
                 var musicStateChanged = Settings.MusicState != EditingClone.MusicState;
+                var DetailsMusicType = Settings.DetailsMusicType != EditingClone.DetailsMusicType;
 
-                _plugin.ReloadMusic = _plugin.ReloadMusic || musicTypeChanged || musicStateChanged; 
+                _plugin.ReloadMusic = _plugin.ReloadMusic || musicTypeChanged || musicStateChanged || DetailsMusicType;
 
                 _plugin.UpdateDownloadManager(Settings);
                 _plugin.ReplayMusic();
@@ -126,9 +127,9 @@ namespace PlayniteSounds
             }
             catch (Exception e)
             {
-                _plugin.HandleException(e);
+                PlayniteSounds.HandleException(e);
             }
-           
+
         }
 
         public bool VerifySettings(out List<string> errors)
