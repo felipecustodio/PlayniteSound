@@ -74,7 +74,12 @@ namespace PlayniteSounds
         static private void Timer_Tick(object sender, EventArgs e)
         {
             bool someIsPlaying = false;
-            var mediaElements = GetAllMediaElements(Application.Current.MainWindow);
+
+            List<MediaElement> mediaElements = new List<MediaElement>();
+            foreach (Window w in Application.Current.Windows)
+            {
+                mediaElements.AddRange(GetAllMediaElements(w));
+            }
 
             foreach (var mediaElement in mediaElements)
             {
