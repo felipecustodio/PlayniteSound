@@ -25,7 +25,7 @@ namespace PlayniteSounds.Downloaders
     {
         private readonly HttpClient _httpClient;
 
-        List<YoutubeItem> _items;
+        List<YoutubeItem> _items = new List<YoutubeItem>();
         public List<YoutubeItem> Results { get => _items; }
 
         private const string youtubeItemsListPathPlaylist = "..playlistRenderer";
@@ -37,7 +37,6 @@ namespace PlayniteSounds.Downloaders
 
         public YoutubeClient(HttpClient httpClient)
         {
-            _items = new List<YoutubeItem>();
             _httpClient = httpClient;
         }
 

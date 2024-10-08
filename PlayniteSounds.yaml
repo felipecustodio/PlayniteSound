@@ -1,5 +1,12 @@
 AddonId: 'Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb'
 Packages:
+  - Version: 5.7.11
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2024-10-08
+    PackageUrl: https://github.com/ashpynov/PlayniteSound/releases/download/v5.7.11/Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb_5_7_11.pext
+    Changelog:
+      - Second attempt to fix null value error #8.
+      - Cancelation of loading was improved.
   - Version: 5.7.10
     RequiredApiVersion: 6.11.0
     ReleaseDate: 2024-10-01

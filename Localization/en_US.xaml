@@ -127,6 +127,10 @@
     <sys:String x:Key="LOC_PLAYNITESOUNDS_SearchingForAlbums">Searching for albums</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ReadingSongs">Reading song list</sys:String>
 
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_TimeoutError">Action canceled due to Timeout</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_WereError">Were one or more errors during downloading:</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_SkipLabel">Skip</sys:String>
+
 
 
 </ResourceDictionary>

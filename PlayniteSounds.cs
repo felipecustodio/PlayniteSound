@@ -24,6 +24,8 @@ using PlayniteSounds.Common.Constants;
 using PlayniteSounds.Models;
 using PlayniteSounds.Controls;
 using PlayniteSounds.ViewModels;
+using System.Threading.Tasks;
+using System.Data;
 
 namespace PlayniteSounds
 {
@@ -387,7 +389,9 @@ namespace PlayniteSounds
             {
                 var games = PlayniteApi.Database.Games
                     .Where(x => x.Added != null && x.Added > Settings.LastAutoLibUpdateAssetsDownload);
+                MuteExceptions();
                 CreateDownloadDialogue(games, Source.All);
+                UnMuteExceptions();
             }
 
             Settings.LastAutoLibUpdateAssetsDownload = DateTime.Now;
@@ -1093,6 +1097,10 @@ namespace PlayniteSounds
                         (T)(r as GenericObjectOption)?.Object
                 ).ToList();
             }
+            else if (result == false && model.CancelationRequested)
+            {
+                throw new DialogCanceledException();
+            }
             return new List<T>();
 
         }
@@ -1755,12 +1763,18 @@ namespace PlayniteSounds
 
             var overwriteSelect = GetBoolFromYesNoDialog(Resource.DialogMessageOverwriteSelect);
 
+            MuteExceptions(!(games.Count() == 1 || albumSelect || songSelect));
+
             CreateDownloadDialogue(games, source, albumSelect, songSelect, overwriteSelect);
+
+            UnMuteExceptions(verbose: true);
 
             ReloadMusic = true;
             DownloadManager.Cleanup();
             ReplayMusic();
         }
+
+        public static GlobalProgressActionArgs GlobalStatus= default;
 
         private void CreateDownloadDialogue(
             IEnumerable<Game> games,
@@ -1788,16 +1802,26 @@ namespace PlayniteSounds
         {
 
             int gameIdx = 0;
+            GlobalStatus = args;
+
             foreach (var game in games.TakeWhile(_ => !args.CancelToken.IsCancellationRequested))
             {
                 args.ProgressMaxValue = games.Count;
                 args.CurrentProgressValue = ++gameIdx;
-                args.Text = $"{progressTitle}\n\n{args.CurrentProgressValue}/{args.ProgressMaxValue}\n{game.Name}";
+                args.Text = $"{progressTitle} ({args.CurrentProgressValue}/{args.ProgressMaxValue})\n\n{game.Name}";
 
                 var gameDirectory = CreateMusicDirectory(game);
 
-                var newFilePaths =
-                    DownloadSongsFromGame(args, progressTitle, source, game, gameDirectory, songSelect, albumSelect, overwrite);
+                List<string> newFilePaths = default;
+                try
+                {
+                    newFilePaths =
+                        DownloadSongsFromGame(args, progressTitle, source, game, gameDirectory, songSelect, albumSelect, overwrite);
+                }
+                catch (DialogCanceledException)
+                {
+                    break;
+                }
 
                 var fileDownloaded = newFilePaths != null;
                 bool normalized = false;
@@ -1854,6 +1878,12 @@ namespace PlayniteSounds
 
             } while (songSelect && songs is null);
 
+            if (songs is null)
+            {
+                Logger.Info($"No songs found for album '{album.Name}' from source '{album.Source}' for game '{game.Name}'");
+                return null;
+            }
+
             List<string> newFilePaths = new List<string>();
             int musicIdx = 0;
             foreach (Song song in songs.TakeWhile(_ => !args.CancelToken.IsCancellationRequested))
@@ -1863,7 +1893,7 @@ namespace PlayniteSounds
                     args.ProgressMaxValue = songs.Count;
                     args.CurrentProgressValue = ++musicIdx;
                 }
-                args.Text = $"{progressTitle}\n\n{game.Name}({args.CurrentProgressValue}/{args.ProgressMaxValue})\n{song.Name}";
+                args.Text = $"{progressTitle} ({args.CurrentProgressValue}/{args.ProgressMaxValue})\n\n{game.Name}: {song.Name}";
 
                 Logger.Info($"Selected song '{song.Name}' from album '{album.Name}' for game '{game.Name}'");
 
@@ -1918,6 +1948,9 @@ namespace PlayniteSounds
                     }
                     catch (Exception e)
                     {
+                        if (e is DialogCanceledException)
+                            throw;
+
                         HandleException(e);
                         return default;
                     }
@@ -1925,8 +1958,8 @@ namespace PlayniteSounds
                 else
                 {
                     var albums = DownloadManager.GetAlbumsForGame(
-                        StringUtilities.StripStrings(game.Name), source, token, true ).ToList();
-                    if (albums.Any())
+                        StringUtilities.StripStrings(game.Name), source, token, true )?.ToList();
+                    if (albums?.Any() ?? false)
                     {
                         album = DownloadManager.BestAlbumPick(albums, game);
                     }
@@ -2179,12 +2212,56 @@ namespace PlayniteSounds
             return Directory.GetFiles(_defaultMusicPath);
         }
 
+        static public bool _muteExceptions = false;
+        static public List<string> _mutedErrors = new List<string>();
+
+        static public void MuteExceptions(bool mute = true)
+        {
+            _muteExceptions = mute;
+            _mutedErrors = new List<string>();
+        }
+
+        static public void UnMuteExceptions(bool verbose = false)
+        {
+            if (verbose && _muteExceptions && _mutedErrors.Count > 0)
+            {
+                List<string> errors = _mutedErrors.Take(3).ToList();
+
+                if (_mutedErrors.Count() > 3)
+                    errors.Add($"...({_mutedErrors.Count() - 3})...");
+
+                Dialogs.ShowErrorMessage(Resource.WereErrors + "\r\n" + string.Join(",\r\n", errors)+".", App.AppName);
+            }
+            _muteExceptions = false;
+            _mutedErrors = new List<string>();
+        }
+
+
         static public void HandleException(Exception e, CancellationToken cancellationToken = default)
         {
             if (!cancellationToken.IsCancellationRequested)
             {
-                Logger.Error(e, new StackTrace(e).GetFrame(0).GetMethod().Name);
-                Dialogs.ShowErrorMessage(e.InnerException?.Message ?? e.Message, App.AppName);
+                if (e.InnerException is TaskCanceledException)
+                {
+                    Logger.Error(e, "Timeout at " + e.StackTrace);
+
+                    _mutedErrors.AddMissing(Resource.TimeoutError);
+
+                    if (!_muteExceptions)
+                    {
+                        Dialogs.ShowErrorMessage(Resource.TimeoutError, App.AppName);
+                    }
+                }
+                else
+                {
+                    Logger.Error(e, e.StackTrace);
+                    _mutedErrors.AddMissing(e.InnerException?.Message ?? e.Message);
+
+                    if (!_muteExceptions)
+                    {
+                        Dialogs.ShowErrorMessage(e.InnerException?.Message ?? e.Message, App.AppName);
+                    }
+                }
             }
         }
 

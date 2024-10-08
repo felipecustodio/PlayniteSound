@@ -121,7 +121,8 @@ namespace PlayniteSounds.Models
 
 
         public string FFmpegNormalizeArgs { get; set; }
-        public IList<Source> Downloaders { get; set; } = new List<Source> { Source.Youtube };
+        [DontSerialize]
+        public IList<Source> Downloaders { get; set; } = new List<Source> { Source.Youtube, Source.KHInsider };
         public DateTime LastAutoLibUpdateAssetsDownload { get; set; } = DateTime.Now;
         public bool PromptedForMigration { get; set; }
 

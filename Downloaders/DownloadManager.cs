@@ -77,6 +77,11 @@ namespace PlayniteSounds.Downloaders
 
             if (!string.IsNullOrEmpty(path) && path != temp && File.Exists(temp))
             {
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+
                 File.Move(temp, path);
                 return true;
             }
@@ -95,9 +100,7 @@ namespace PlayniteSounds.Downloaders
             }
             catch (Exception e)
             {
-
-                LogManager.GetLogger().Error(e, new StackTrace(e).GetFrame(0).GetMethod().Name);
-                PlayniteSounds.playniteAPI.Dialogs.ShowErrorMessage(e.Message);
+                PlayniteSounds.HandleException(e, cancellationToken);
             }
             return false;
         }

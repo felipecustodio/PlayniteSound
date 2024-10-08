@@ -15,6 +15,9 @@ using PlayniteSounds.Views;
 
 namespace PlayniteSounds.ViewModels
 {
+    class DialogCanceledException : Exception
+    {}
+
     class MusicSelectionViewModel : ObservableObject
     {
         private IPlayniteAPI PlayniteApi { get; }
@@ -40,11 +43,14 @@ namespace PlayniteSounds.ViewModels
             }
         }
 
-        static GlobalProgressActionArgs progressArgs;
+        static GlobalProgressActionArgs progressArgs=null;
         static string prefix;
 
         public static void SetProgress(int pos=0, int max=0, string text=default)
         {
+            if (progressArgs is null)
+                return;
+
             if (max > 0)
             {
                 progressArgs.IsIndeterminate = false;
@@ -95,14 +101,25 @@ namespace PlayniteSounds.ViewModels
                 OnPropertyChanged();
             }
         }
+        public bool CancelationRequested { get; private set; } = false;
 
         public RelayCommand<object> CloseCommand
+        {
+            get => new RelayCommand<object>((a) =>
+            {
+                CancelationRequested = true;
+                CloseView(false);
+            });
+        }
+
+        public RelayCommand<object> SkipCommand
         {
             get => new RelayCommand<object>((a) =>
             {
                 CloseView(false);
             });
         }
+
 
         public RelayCommand<object> PreviewCommand
         {
@@ -159,6 +176,7 @@ namespace PlayniteSounds.ViewModels
         public SelectionMode SelectionMode { get => isSong ? SelectionMode.Multiple : SelectionMode.Single; }
         public string CheckBoxesVisibility { get => isSong ? "Visible" : "Collapsed"; }
         public string BackVisibility { get => isSong ? "Visible" : "Collapsed"; }
+        public string SkipVisibility { get => PlayniteSounds.GlobalStatus.CurrentProgressValue < PlayniteSounds.GlobalStatus.ProgressMaxValue ? "Visible" : "Collapsed"; }
         public string SearchVisibility { get => !isSong ? "Visible" : "Collapsed"; }
 
         private string title;
@@ -292,7 +310,7 @@ namespace PlayniteSounds.ViewModels
             Dialogs.ActivateGlobalProgress(
                 args => SearchResults = SearchForResults(SearchTerm, args),
                 new GlobalProgressOptions(
-                    ResourceProvider.GetString(!isSong ? "LOC_PLAYNITESOUNDS_SearchingForAlbums" : "LOC_PLAYNITESOUNDS_ReadingSongs")
+                    (PlayniteSounds.GlobalStatus?.Text ?? "") + ": " + ResourceProvider.GetString(!isSong ? "LOC_PLAYNITESOUNDS_SearchingForAlbums" : "LOC_PLAYNITESOUNDS_ReadingSongs")
                     , true
                 ));
         }

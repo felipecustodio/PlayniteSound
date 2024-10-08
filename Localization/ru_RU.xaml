@@ -126,5 +126,8 @@
     <sys:String x:Key="LOC_PLAYNITESOUNDS_SearchingForAlbums">Поиск альбомов</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ReadingSongs">Загрузка списка мелодий</sys:String>
 
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_TimeoutError">Прервано по таймауту</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_WereError">Одна или несколько ошибок произошли во время загрузки:</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_SkipLabel">Пропустить</sys:String>
 
 </ResourceDictionary>
