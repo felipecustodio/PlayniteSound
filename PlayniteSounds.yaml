@@ -1,5 +1,11 @@
 AddonId: 'Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb'
 Packages:
+  - Version: 5.7.12
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2024-10-18
+    PackageUrl: https://github.com/ashpynov/PlayniteSound/releases/download/v5.7.12/Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb_5_7_12.pext
+    Changelog:
+      - Fixed Bug Music Keeps Playing Even When Switching Games #9
   - Version: 5.7.11
     RequiredApiVersion: 6.11.0
     ReleaseDate: 2024-10-08

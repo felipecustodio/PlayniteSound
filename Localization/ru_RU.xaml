@@ -10,7 +10,7 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_Music">Музыка</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_Sound">Звук</sys:String>
 
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusic">По умолчанию</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusic">Общая</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusicPlatform">Платформа</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusicPlatformGame">Игра</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeFilter">Фильтр</sys:String>
@@ -21,7 +21,7 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkAutoDownload">Автоматически загружать музыку для только что добавленных игр при обновлении библиотеки</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkRandomizeOnMusicEnd">Случайный выбор музыки при повторе</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkRandomizeOnEverySelect">Случайный выбор музыки при выборе</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkBackup">Воспроизводить стандартную музыку, если музыка по умолчанию не найдена</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkBackup">Воспроизводить запасную музыку, если музыка для игры или платформы не найдена</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_StopMusic">Останавливать когда:</sys:String>
 
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize">Автоматически нормализовать громкость при загрузке</sys:String>
@@ -122,7 +122,8 @@
 
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeSame">Та же что и в списке игр</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_DetailsMusicType">в деталях игры:</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkCollectFromGames">Использовать музыку из всех аналогичных игр для Платформы, Фильтра или По умолчанию</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkCollectFromGames">Использовать музыку из всех аналогичных игр для Платформы, Фильтра или Общей музыки</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkCollectFromGamesOnBackup">Использовать музыку из других игр если музыка для игры или платформы не найдена</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_SearchingForAlbums">Поиск альбомов</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ReadingSongs">Загрузка списка мелодий</sys:String>
 

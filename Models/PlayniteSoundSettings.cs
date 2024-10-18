@@ -65,7 +65,18 @@ namespace PlayniteSounds.Models
 
         public bool StopMusic { get; set; } = true;
         public bool SkipFirstSelectSound { get; set; }
-        public bool PlayBackupMusic { get; set; }
+
+        private bool playBackupMusic = false;
+        public bool PlayBackupMusic
+        {
+            get => playBackupMusic;
+            set
+            {
+                playBackupMusic = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         [DontSerialize]
         public bool PauseOnDeactivate
@@ -153,6 +164,7 @@ namespace PlayniteSounds.Models
         public bool PauseOnTrailer { get; set; } = true;
 
         public bool CollectFromGames { get; set; } = false;
+        public bool CollectFromGamesOnBackup { get; set; } = false;
 
         [DontSerialize]
         private bool previewIsPlaying { get; set; }

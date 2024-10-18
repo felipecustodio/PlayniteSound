@@ -649,6 +649,38 @@ namespace PlayniteSounds
 
         private void PlayMusicFromFirstSelected() => PlayMusicFromFirst(SelectedGames);
 
+        private List<string> CollectMusicFromSimilar(MusicType type, Game game = default)
+        {
+            List<string> files = new List<string>();
+            if (type == MusicType.Platform && game is null)
+            {
+                return files;
+            }
+
+            List<Game> similarGames = new List<Game>();
+            switch (type)
+            {
+                case MusicType.Platform:
+                    similarGames = PlayniteApi.Database.Games.Where(g => g.PlatformIds.Intersect(game.PlatformIds).Any()).ToList();
+                    break;
+                case MusicType.Filter:
+                    similarGames = PlayniteApi.Database.GetFilteredGames(PlayniteApi.MainView.GetCurrentFilterSettings()).ToList();
+                    break;
+                default:
+                    similarGames = PlayniteApi.Database.Games.ToList();
+                    break;
+            }
+            foreach( Game g in similarGames )
+            {
+                var path = GetMusicDirectoryPath(g);
+                if (Directory.Exists(path))
+                {
+                    files.AddMissing(Directory.GetFiles(path));
+                }
+            }
+            return files;
+        }
+
         private void PlayMusicFromFirst(IEnumerable<Game> games = null)
         {
             var game = games.FirstOrDefault();
@@ -674,27 +706,7 @@ namespace PlayniteSounds
 
             if ( Settings.CollectFromGames && Settings.ChoosenMusicType != MusicType.Game )
             {
-                var similarGames = new List<Game>();
-                switch (Settings.ChoosenMusicType)
-                {
-                    case MusicType.Platform:
-                        similarGames = PlayniteApi.Database.Games.Where(g => g.PlatformIds.Intersect(game.PlatformIds).Any()).ToList();
-                        break;
-                    case MusicType.Filter:
-                        similarGames = PlayniteApi.Database.GetFilteredGames(PlayniteApi.MainView.GetCurrentFilterSettings()).ToList();
-                        break;
-                    default:
-                        similarGames = PlayniteApi.Database.Games.ToList();
-                        break;
-                }
-                foreach( Game g in similarGames )
-                {
-                    var path = GetMusicDirectoryPath(g);
-                    if (Directory.Exists(path))
-                    {
-                        files.AddMissing(Directory.GetFiles(path));
-                    }
-                }
+                files.AddMissing(CollectMusicFromSimilar(Settings.ChoosenMusicType, game));
             }
 
             if (Settings.PlayBackupMusic && !files.Any())
@@ -702,10 +714,10 @@ namespace PlayniteSounds
                 files = new List<string>(GetBackupFiles());
             }
 
-            PlayMusicFromFiles(files.ToArray());
+            PlayMusicFromFiles(files);
         }
 
-        private void PlayMusicFromFiles(string[] musicFiles)
+        private void PlayMusicFromFiles(List<string> musicFiles)
         {
             var musicFile = !string.IsNullOrEmpty(_prevMusicFileName) ? _prevMusicFileName : musicFiles.FirstOrDefault() ?? string.Empty;
             var musicEndRandom = _musicEnded && Settings.RandomizeOnMusicEnd;
@@ -714,14 +726,18 @@ namespace PlayniteSounds
 
             var changedSelection = !musicFiles.Contains(_prevMusicFileName);
 
-            if ((changedSelection && musicFiles.Length > 0) || (musicFiles.Length > 1 && (Settings.RandomizeOnEverySelect || musicEndRandom)))
+            if ((changedSelection && musicFiles.Count > 0) || (musicFiles.Count > 1 && (Settings.RandomizeOnEverySelect || musicEndRandom)))
             {
                 ReloadMusic = true;
                 do
                 {
-                    musicFile = musicFiles[rand.Next(musicFiles.Length)];
+                    musicFile = musicFiles[rand.Next(musicFiles.Count)];
                 }
                 while (_prevMusicFileName == musicFile);
+            }
+            else if ( changedSelection && musicFiles.Count == 0 )
+            {
+                musicFile = string.Empty;
             }
 
             PlayMusicFromPath(musicFile);
@@ -2194,14 +2210,18 @@ namespace PlayniteSounds
         }
 
         // Backup order is game -> filter -> default
-        private string[] GetBackupFiles()
+        private List<string> GetBackupFiles()
         {
             if (Settings.ChoosenMusicType != MusicType.Default)
             {
-                var filterDirectory = GetCurrentFilterDirectoryPath();
+                string filterDirectory = GetCurrentFilterDirectoryPath();
                 if (Directory.Exists(filterDirectory))
                 {
-                    var filterFiles = Directory.GetFiles(filterDirectory);
+                    List<string> filterFiles = Directory.GetFiles(filterDirectory).ToList();
+                    if (Settings.CollectFromGamesOnBackup)
+                    {
+                        filterFiles.AddMissing(CollectMusicFromSimilar(MusicType.Filter));
+                    }
                     if (filterFiles.Any())
                     {
                         return filterFiles;
@@ -2209,7 +2229,12 @@ namespace PlayniteSounds
                 }
             }
 
-            return Directory.GetFiles(_defaultMusicPath);
+            List<string> defaultFiles = Directory.Exists(_defaultMusicPath) ? Directory.GetFiles(_defaultMusicPath).ToList() : new List<string>();
+            if (Settings.CollectFromGamesOnBackup)
+            {
+                defaultFiles.AddMissing(CollectMusicFromSimilar(MusicType.Default));
+            }
+            return defaultFiles;
         }
 
         static public bool _muteExceptions = false;

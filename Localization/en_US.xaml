@@ -22,7 +22,7 @@
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkAutoDownload">Automatically download music for newly added games on library update</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkRandomizeOnMusicEnd">Randomize music every loop</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkRandomizeOnEverySelect">Randomize music upon selection</sys:String>
-    <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkBackup">Play backup music when default cannot be found</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkBackup">Play backup music when music cannot be found</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_StopMusic">Stop music when</sys:String>
 
     <sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize">Automatically normalize music when downloading</sys:String>
@@ -124,6 +124,7 @@
     <sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeSame">Same as in Game List</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_DetailsMusicType">at Fullscreen Mode Game Details:</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkCollectFromGames">Use games music collection for Platform, Filter or Default</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkCollectFromGamesOnBackup">Use games music collection as backup music</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_SearchingForAlbums">Searching for albums</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ReadingSongs">Reading song list</sys:String>
 
