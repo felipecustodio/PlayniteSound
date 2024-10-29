@@ -1894,7 +1894,7 @@ namespace PlayniteSounds
 
             } while (songSelect && songs is null);
 
-            if (songs is null)
+            if (songs?.FirstOrDefault() is null)
             {
                 Logger.Info($"No songs found for album '{album.Name}' from source '{album.Source}' for game '{game.Name}'");
                 return null;
@@ -2001,9 +2001,21 @@ namespace PlayniteSounds
 
             if (OnlySearchForYoutubeVideos(album.Source))
             {
-                selectedSong = songSelect
-                    ? PromptUserForYoutubeSearch(strippedGameName)
-                    : new List<Song> { DownloadManager.BestSongPick(album.Songs.ToList(), regexGameName) };
+                if (songSelect)
+                {
+                    selectedSong = PromptUserForYoutubeSearch(strippedGameName);
+                }
+                else
+                {
+                    if (DownloadManager.BestSongPick(album.Songs.ToList(), regexGameName) is Song bestSong)
+                    {
+                        selectedSong = new List<Song>() { bestSong };
+                    }
+                    else
+                    {
+                        Logger.Info($"Can't pick best song from album '{album.Name}'. Skipped...");
+                    }
+                }
             }
             else
             {
@@ -2013,7 +2025,7 @@ namespace PlayniteSounds
                 }
                 else
                 {
-                    var songs = DownloadManager.GetSongsFromAlbum(album, token).ToList();
+                    List<Song> songs = DownloadManager.GetSongsFromAlbum(album, token).Where(s=>s != null).ToList();
                     if (!songs.Any())
                     {
                         Logger.Info($"Did not find any songs for album '{album.Name}' of game '{gameName}'");
@@ -2021,10 +2033,16 @@ namespace PlayniteSounds
                     else
                     {
                         Logger.Info($"Found songs for album '{album.Name}' of game '{gameName}'");
-                        selectedSong = new List<Song> { DownloadManager.BestSongPick(songs, regexGameName) };
+                        if (DownloadManager.BestSongPick(songs, regexGameName) is Song bestSong)
+                        {
+                            selectedSong = new List<Song> { bestSong };
+                        }
+                        else
+                        {
+                            Logger.Info($"Every song in album '{album.Name}' is too long. Skipped...");
+                        }
                     }
                 }
-
             }
 
             return selectedSong;
@@ -2058,7 +2076,7 @@ namespace PlayniteSounds
         {
             if (Settings.TagNormalizedGames)
             {
-                var normalizedTag = PlayniteApi.Database.Tags.Add(Resource.NormTag);
+                Tag normalizedTag = PlayniteApi.Database.Tags.Add(Resource.NormTag);
                 if (AddTagToGame(game, normalizedTag))
                 {
                     Logger.Info($"Added normalized tag to '{game.Name}'");
