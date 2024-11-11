@@ -63,6 +63,13 @@ namespace PlayniteSounds.Models
             }
         }
 
+        private double fadeDuration = 0.5;
+        public double FadeDuration
+        {
+            get => fadeDuration;
+            set => SetValue(ref fadeDuration, Math.Round(value, 2));
+        }
+
         public bool StopMusic { get; set; } = true;
         public bool SkipFirstSelectSound { get; set; }
 

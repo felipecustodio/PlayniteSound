@@ -106,6 +106,8 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_MsgHelp7">Музыкальные файлы должны быть файлами mp3, в зависимости от настроек быть названными "_music_.mp3" или иметь название игры с удаленными недопустимыми символами и быть помещенными в папку для каждой платформы. Если вы не уверены в имени файла и его расположении, вы можете щелкнуть правой кнопкой мыши по игре и выбрать опцию "Показать имя файла музыки". Обратите внимание, что имена файлов и их местоположение меняются в зависимости от выбранных настроек!</sys:String>
 
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_MusicVolume">Громкость музыки:</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_MusicFadeDuration">Плавный переход:</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_MusicFadeDurationSec">сек</sys:String>
 
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_Manager">Менеджер звуков</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ManagerLoad">Загрузить</sys:String>

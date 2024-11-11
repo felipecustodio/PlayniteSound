@@ -91,6 +91,7 @@ namespace PlayniteSounds
         private readonly Dictionary<string, PlayerEntry> _players = new Dictionary<string, PlayerEntry>();
 
         private MediaPlayer _musicPlayer;
+        private MusicFader _musicFader;
         private readonly MediaTimeline _timeLine;
 
         private readonly List<GameMenuItem> _gameMenuItems;
@@ -142,6 +143,7 @@ namespace PlayniteSounds
                 Localization.SetPluginLanguage(PluginFolder, api.ApplicationSettings.Language);
                 _musicPlayer = new MediaPlayer();
                 _musicPlayer.MediaEnded += MediaEnded;
+                _musicFader = new MusicFader(_musicPlayer, Settings);
                 _timeLine = new MediaTimeline();
                 //{
                 //    RepeatBehavior = RepeatBehavior.Forever
@@ -749,7 +751,7 @@ namespace PlayniteSounds
             {
                 if (_musicPlayer.Clock != null)
                 {
-                    Try(_musicPlayer.Clock.Controller.Resume);
+                    Try(()=>_musicFader.Resume());
                 }
                 else
                 {
@@ -762,7 +764,7 @@ namespace PlayniteSounds
         {
             if (_musicPlayer.Clock != null)
             {
-                Try(_musicPlayer.Clock.Controller.Pause);
+                Try(()=>_musicFader.Pause());
             }
         }
 
@@ -770,13 +772,12 @@ namespace PlayniteSounds
         {
             if (_musicPlayer.Clock != null)
             {
-                Try(SubCloseMusic);
+                Try(() => _musicFader.Switch(SubCloseMusic, null));
             }
         }
 
         private void SubCloseMusic()
         {
-            _musicPlayer.Clock.Controller.Stop();
             _musicPlayer.Clock = null;
             _musicPlayer.Close();
             SettingsModel.Settings.CurrentMusicName = string.Empty;
@@ -798,22 +799,31 @@ namespace PlayniteSounds
             if (ReloadMusic || _prevMusicFileName.Equals(string.Empty) || filePath.Equals(string.Empty) ||
                 (Path.GetDirectoryName(filePath) != Path.GetDirectoryName(_prevMusicFileName)))
             {
-                Try(() => SubPlayMusicFromPath(filePath));
+                if (File.Exists(filePath))
+                {
+                    Try(() => _musicFader.Switch(SubCloseMusic, () => SubPlayMusicFromPath(filePath)));
+                }
+                else
+                    Try(() => _musicFader.Switch(SubCloseAndStopMusic, null));
             }
+        }
+
+        private void SubCloseAndStopMusic()
+        {
+            SubCloseMusic();
+            ReloadMusic = false;
+            _prevMusicFileName = string.Empty;
         }
 
         private void SubPlayMusicFromPath(string filePath)
         {
-            CloseMusic();
             ReloadMusic = false;
             _prevMusicFileName = string.Empty;
             if (File.Exists(filePath))
             {
                 _prevMusicFileName = filePath;
                 _timeLine.Source = new Uri(filePath);
-                _musicPlayer.Volume = Settings.MusicVolume / 100.0;
                 _musicPlayer.Clock = _timeLine.CreateClock();
-                _musicPlayer.Clock.Controller.Begin();
                 _musicEnded = false;
                 SettingsModel.Settings.CurrentMusicName = Path.GetFileNameWithoutExtension(filePath);
             }

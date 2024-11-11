@@ -104,6 +104,8 @@
                             <RowDefinition/>
                             <RowDefinition Height="5"/>
                             <RowDefinition/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Label Grid.Row="0"  Name="LblMusicWhere" Content="{DynamicResource LOC_PLAYNITESOUNDS_MusicWhere}" d:LayoutOverrides="VerticalAlignment"/>
                         <ComboBox Grid.Row="0" Grid.Column="1" Name="CmbMusicWhere" SelectedIndex="{Binding Settings.MusicState, Converter={common:AudioStateConverter}}" Height="20">
@@ -145,18 +147,32 @@
                             <Label Name="PercentageSign" Content="%"/>
                         </StackPanel>
                         <Slider Name="VolumeSlider" Grid.Row="6" Grid.Column="1" Maximum="100" Value="{Binding Settings.MusicVolume}"  AutoToolTipPlacement="TopLeft" ValueChanged="Slider_ValueChanged" VerticalAlignment="Center"/>
-                        <CheckBox Name="ChkPauseOnDeactivate" Grid.Row="8" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PauseOnDeactivate}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkPauseOnDeactivate}"/>
-                        <CheckBox Name="ChkPauseOnTrailer" Grid.Row="10" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PauseOnTrailer}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkPauseOnTrailer}"/>
-                        <CheckBox Name="ChkRandomizeOnEverySelect" Grid.Row="12" Grid.ColumnSpan="2" IsChecked="{Binding Settings.RandomizeOnEverySelect}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkRandomizeOnEverySelect}"/>
-                        <CheckBox Name="ChkRandomizeOnMusicEnd" Grid.Row="14" Grid.ColumnSpan="2" IsChecked="{Binding Settings.RandomizeOnMusicEnd}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkRandomizeOnMusicEnd}"/>
-                        <CheckBox Name="ChkCollectFromGames" Grid.Row="16" Grid.ColumnSpan="2" IsChecked="{Binding Settings.CollectFromGames}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkCollectFromGames}"/>
-                        <CheckBox Name="ChkBackgroundNone" Grid.Row="18" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PlayBackupMusic}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkBackup}"/>
-                        <CheckBox Name="ChkBackgroundNoneCollect" Grid.Row="20" Grid.ColumnSpan="2"
+                        <StackPanel Grid.Row="8" Orientation="Horizontal">
+                            <Label Name="LblMusicFade" Content="{DynamicResource LOC_PLAYNITESOUNDS_MusicFadeDuration}" d:LayoutOverrides="VerticalAlignment"/>
+                            <Label Name="LblSpaceFade" Content=" "/>
+                            <Label Name="FadeTime" Content="{Binding Settings.FadeDuration}" />
+                            <Label Name="LblSpaceFade2" Content=" "/>
+                            <Label Name="LblMsFade" Content="{DynamicResource LOC_PLAYNITESOUNDS_MusicFadeDurationSec}" d:LayoutOverrides="VerticalAlignment"/>
+                        </StackPanel>
+                        <Slider Name="FadeSlider" Grid.Row="8" Grid.Column="1"
+                            Minimum="0.05" Maximum="2" SmallChange="0.1" LargeChange="0.5"
+                            TickFrequency="0.05" TickPlacement="BottomRight"
+                            AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="2"
+                            Value="{Binding Settings.FadeDuration}"
+                            VerticalAlignment="Center"/>
+
+                        <CheckBox Name="ChkPauseOnDeactivate" Grid.Row="10" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PauseOnDeactivate}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkPauseOnDeactivate}"/>
+                        <CheckBox Name="ChkPauseOnTrailer" Grid.Row="12" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PauseOnTrailer}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkPauseOnTrailer}"/>
+                        <CheckBox Name="ChkRandomizeOnEverySelect" Grid.Row="14" Grid.ColumnSpan="2" IsChecked="{Binding Settings.RandomizeOnEverySelect}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkRandomizeOnEverySelect}"/>
+                        <CheckBox Name="ChkRandomizeOnMusicEnd" Grid.Row="16" Grid.ColumnSpan="2" IsChecked="{Binding Settings.RandomizeOnMusicEnd}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkRandomizeOnMusicEnd}"/>
+                        <CheckBox Name="ChkCollectFromGames" Grid.Row="18" Grid.ColumnSpan="2" IsChecked="{Binding Settings.CollectFromGames}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkCollectFromGames}"/>
+                        <CheckBox Name="ChkBackgroundNone" Grid.Row="20" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PlayBackupMusic}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkBackup}"/>
+                        <CheckBox Name="ChkBackgroundNoneCollect" Grid.Row="22" Grid.ColumnSpan="2"
                                   IsChecked="{Binding Settings.CollectFromGamesOnBackup}"
                                   IsEnabled="{Binding Settings.PlayBackupMusic}"
                                   Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkCollectFromGamesOnBackup}"/>
-                        <CheckBox Name="ChkTagMissing" Grid.Row="22" Grid.ColumnSpan="2" IsChecked="{Binding Settings.TagMissingEntries}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkTagMissing}"/>
-                        <CheckBox Name="ChkTagNormal" Grid.Row="24" Grid.ColumnSpan="2" IsChecked="{Binding Settings.TagNormalizedGames}" Content="{DynamicResource LOC_PLAYNITESOUNDS_Normalize_Tag}"/>
+                        <CheckBox Name="ChkTagMissing" Grid.Row="24" Grid.ColumnSpan="2" IsChecked="{Binding Settings.TagMissingEntries}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkTagMissing}"/>
+                        <CheckBox Name="ChkTagNormal" Grid.Row="26" Grid.ColumnSpan="2" IsChecked="{Binding Settings.TagNormalizedGames}" Content="{DynamicResource LOC_PLAYNITESOUNDS_Normalize_Tag}"/>
                     </Grid>
                 </GroupBox>
                 <GroupBox Header="{DynamicResource LOC_PLAYNITESOUNDS_Actions_Download}" Grid.Row="1" Grid.ColumnSpan="2"  Margin="0,5,0,0">
