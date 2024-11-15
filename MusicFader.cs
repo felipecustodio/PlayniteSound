@@ -37,6 +37,13 @@ namespace PlayniteSounds
             fadeTimer.Elapsed += (sender,e) => Application.Current?.Dispatcher?.Invoke(() => TimerTick());
         }
 
+        public void Destroy()
+        {
+            fadeTimer.Close();
+            fadeTimer.Dispose();
+        }
+
+
         void TimerTick()
         {
             double musicVolume = settings.MusicVolume / 100.0;

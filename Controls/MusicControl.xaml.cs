@@ -26,7 +26,10 @@ namespace PlayniteSounds.Controls
         }
         private static void OnTagChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as MusicControl).VideoIsPlaying = Convert.ToBoolean(e.NewValue);
+            if (d is MusicControl musicControl)
+            {
+                musicControl.VideoIsPlaying = Convert.ToBoolean(e.NewValue);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -379,6 +379,9 @@ namespace PlayniteSounds
             CloseMusic();
 
             _musicPlayer.MediaEnded -= MediaEnded;
+
+            _musicFader.Destroy();
+            _musicFader = null;
             _musicPlayer = null;
         }
 
@@ -749,9 +752,9 @@ namespace PlayniteSounds
         {
             if (ShouldPlayMusic())
             {
-                if (_musicPlayer.Clock != null)
+                if (_musicPlayer?.Clock != null)
                 {
-                    Try(()=>_musicFader.Resume());
+                    Try(()=>_musicFader?.Resume());
                 }
                 else
                 {
@@ -762,24 +765,30 @@ namespace PlayniteSounds
 
         private void PauseMusic()
         {
-            if (_musicPlayer.Clock != null)
+            if (_musicPlayer?.Clock != null)
             {
-                Try(()=>_musicFader.Pause());
+                Try(()=>_musicFader?.Pause());
             }
         }
 
         private void CloseMusic()
         {
-            if (_musicPlayer.Clock != null)
+            if (_musicPlayer?.Clock != null)
             {
-                Try(() => _musicFader.Switch(SubCloseMusic, null));
+                Try(() => _musicFader?.Switch(SubCloseMusic, null));
             }
         }
 
         private void SubCloseMusic()
         {
+            if (_musicPlayer is null)
+            {
+                return;
+            }
+
             _musicPlayer.Clock = null;
             _musicPlayer.Close();
+
             SettingsModel.Settings.CurrentMusicName = string.Empty;
         }
 
@@ -801,10 +810,10 @@ namespace PlayniteSounds
             {
                 if (File.Exists(filePath))
                 {
-                    Try(() => _musicFader.Switch(SubCloseMusic, () => SubPlayMusicFromPath(filePath)));
+                    Try(() => _musicFader?.Switch(SubCloseMusic, () => SubPlayMusicFromPath(filePath)));
                 }
                 else
-                    Try(() => _musicFader.Switch(SubCloseAndStopMusic, null));
+                    Try(() => _musicFader?.Switch(SubCloseAndStopMusic, null));
             }
         }
 
@@ -2157,7 +2166,8 @@ namespace PlayniteSounds
         private bool ShouldPlaySound() => ShouldPlayAudio(Settings.SoundState);
 
         private bool ShouldPlayMusic() =>
-            _pausers.Count is 0
+            _musicPlayer != null
+            && _pausers.Count is 0
             && SettingsModel.Settings.MusicVolume > 0
             && !SettingsModel.Settings.VideoIsPlaying
             && !SettingsModel.Settings.PreviewIsPlaying
