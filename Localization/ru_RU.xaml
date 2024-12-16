@@ -17,6 +17,9 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkSkipFirstSelectSound">Пропустить первый звук выбора при запуске</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkPauseOnDeactivate">Приостановить музыку при деактивации или сворачивании Playnite</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkPauseOnTrailer">Приостановить музыку при проигрывании видеотрейлера со звуком</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkPauseNotInLibrary">В стандартном режиме играть музыку только в Библиотеке</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkSkipFirstSelectMusic">Не включать музыку при запуске</sys:String>
+
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkTagMissing">Отметить заголовки, которые не удалось загрузить</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkAutoDownload">Автоматически загружать музыку для только что добавленных игр при обновлении библиотеки</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkRandomizeOnMusicEnd">Случайный выбор музыки при повторе</sys:String>

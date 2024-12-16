@@ -92,6 +92,8 @@ namespace PlayniteSounds.Models
             set { PlayniteSounds.FullscreenSettings.MuteInBackground = value; }
         }
 
+        public bool SkipFirstSelectMusic { get; set; }
+        public bool PauseNotInLibrary { get; set; }
         public bool RandomizeOnEverySelect { get; set; }
         public bool RandomizeOnMusicEnd { get; set; } = true;
         public bool TagMissingEntries { get; set; }

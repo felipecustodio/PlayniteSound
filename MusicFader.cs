@@ -14,7 +14,7 @@ namespace PlayniteSounds
 
         private readonly MediaPlayer player;
         private readonly PlayniteSoundsSettings settings;
-        private readonly Timer fadeTimer;
+        private Timer fadeTimer;
 
         private bool isFadingOut;
         private Action pauseAction;
@@ -39,8 +39,9 @@ namespace PlayniteSounds
 
         public void Destroy()
         {
-            fadeTimer.Close();
-            fadeTimer.Dispose();
+            fadeTimer?.Close();
+            fadeTimer?.Dispose();
+            fadeTimer = null;
         }
 
 
@@ -99,7 +100,7 @@ namespace PlayniteSounds
                 Logger.Trace($"Fade Out: Complete in {(DateTime.Now - lastCall).TotalMilliseconds} ms");
                 return;
             }
-            fadeTimer.Start();
+            fadeTimer?.Start();
             lastTickCall = DateTime.Now;
         }
 
@@ -107,7 +108,7 @@ namespace PlayniteSounds
         {
             lastCall = DateTime.Now;
             lastTickCall = default;
-            fadeTimer.Start();
+            fadeTimer?.Start();
         }
 
         public void Pause()

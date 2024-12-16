@@ -74,7 +74,7 @@ namespace PlayniteSounds
 
         private bool _gameRunning;
         private bool _musicEnded;
-        private bool _firstSelectSound = true;
+        private bool _firstSelect = true;
         private bool _closeAudioFilesNextPlay;
 
         private string _prevMusicFileName = string.Empty;  //used to prevent same file being restarted
@@ -192,9 +192,9 @@ namespace PlayniteSounds
                 if (SettingsModel.Settings.PauseOnTrailer)
                     MediaElementsMonitor.Attach(PlayniteApi, SettingsModel.Settings);
 
-                if (PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Fullscreen)
+                //if (PlayniteApi.ApplicationInfo.Mode == ApplicationMode.Fullscreen)
                 {
-                    (GetFullscreenMainModel() as ObservableObject).PropertyChanged += OnFullscreenChanged;
+                    (GetMainModel() as ObservableObject).PropertyChanged += OnMainModelChanged;
                 }
                 SupressNativeFulscreenMusic();
             }
@@ -204,20 +204,24 @@ namespace PlayniteSounds
             }
         }
 
-        public void OnFullscreenChanged( object sender, PropertyChangedEventArgs args)
+        public void OnMainModelChanged( object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName == "GameDetailsVisible")
             {
-                SettingsModel.Settings.GameDetailsVisible = GetFullscreenMainModel().GameDetailsVisible;
+                SettingsModel.Settings.GameDetailsVisible = GetMainModel().GameDetailsVisible;
                 if ( SettingsModel.Settings.DetailsMusicType != MusicType.Same
                   && SettingsModel.Settings.DetailsMusicType != SettingsModel.Settings.MusicType)
                 {
                     ReplayMusic();
                 }
             }
+            if (args.PropertyName == "ActiveView" && SettingsModel.Settings.PauseNotInLibrary)
+            {
+                ReplayMusic();
+            }
         }
 
-        private dynamic GetFullscreenMainModel()
+        private dynamic GetMainModel()
         {
             return PlayniteApi.MainView
                 .GetType()
@@ -232,7 +236,7 @@ namespace PlayniteSounds
                 || SettingsModel.Settings.MusicState == AudioState.Desktop)
                 return;
 
-            dynamic backgroundMusicProperty = GetFullscreenMainModel().App
+            dynamic backgroundMusicProperty = GetMainModel().App
                 .GetType()
                 .GetProperty("BackgroundMusic");
 
@@ -298,13 +302,16 @@ namespace PlayniteSounds
 
         public override void OnGameSelected(OnGameSelectedEventArgs args)
         {
-            if (!(_firstSelectSound && Settings.SkipFirstSelectSound))
+            if (!(_firstSelect && Settings.SkipFirstSelectSound))
             {
                 PlaySoundFileFromName(SoundFile.GameSelectedSound);
             }
-            _firstSelectSound = false;
 
-            PlayMusicBasedOnSelected();
+            if (!(_firstSelect && Settings.SkipFirstSelectMusic))
+            {
+                PlayMusicBasedOnSelected();
+            }
+            _firstSelect = false;
         }
 
         public override void OnGameStarted(OnGameStartedEventArgs args)
@@ -2177,11 +2184,14 @@ namespace PlayniteSounds
         private bool ShouldPlayAudio(AudioState state)
         {
             var desktopMode = IsDesktop();
-            var playOnFullScreen = !desktopMode && state == AudioState.Fullscreen;
-            var playOnBoth = state == AudioState.Always;
-            var playOnDesktop = desktopMode && state == AudioState.Desktop;
+            var playOnFullScreen = !desktopMode && (state == AudioState.Fullscreen || state == AudioState.Always);
+            var playOnDesktop = desktopMode && (state == AudioState.Desktop || state == AudioState.Always);
 
-            return playOnFullScreen || playOnBoth || playOnDesktop;
+            playOnDesktop &= !SettingsModel.Settings.PauseNotInLibrary || GetMainModel().ActiveView.GetType().Name == "Library";
+
+            var skipFirstSelectMusic = _firstSelect && Settings.SkipFirstSelectMusic;
+
+            return (playOnFullScreen || playOnDesktop) && !skipFirstSelectMusic;
         }
 
         private void ShowMessage(string resource) => Dialogs.ShowMessage(resource, App.AppName);

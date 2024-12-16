@@ -18,6 +18,8 @@
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkSkipFirstSelectSound">Skip first 'select' sound on startup</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkPauseOnDeactivate">Pause music when Playnite deactivates or minimizes</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkPauseOnTrailer">Pause music during video trailer with sound</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkPauseNotInLibrary">Desktop mode: Pause music when not in Library</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkSkipFirstSelectMusic">Do not play music on startup</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkTagMissing">Tag titles that fail to download</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkAutoDownload">Automatically download music for newly added games on library update</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_ChkRandomizeOnMusicEnd">Randomize music every loop</sys:String>

@@ -65,6 +65,7 @@
             </StackPanel>
         </TabItem>
         <TabItem Header="{DynamicResource LOC_PLAYNITESOUNDS_Music}">
+        <ScrollViewer>
             <StackPanel Margin="2">
                 <!--<CheckBox Name="ChkAutoSearchOrder" Grid.Row="0" Grid.ColumnSpan="2" IsChecked="{Binding Settings.AutoParallelDownload}" Content="{DynamicResource LOC_PLAYNITESOUNDS_AutoParDown}" ToolTip="Determine whether results are retrieved for each source or for the first source with results."/>
                     <CheckBox Name="ChkManualSearchOrder" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding Settings.ManualParallelDownload}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ManParDown}" ToolTip="Determine whether results are retrieved for each source or for the first source with results."/>-->
@@ -75,6 +76,8 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="5"/>
                             <RowDefinition/>
                             <RowDefinition Height="5"/>
                             <RowDefinition/>
@@ -163,16 +166,18 @@
 
                         <CheckBox Name="ChkPauseOnDeactivate" Grid.Row="10" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PauseOnDeactivate}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkPauseOnDeactivate}"/>
                         <CheckBox Name="ChkPauseOnTrailer" Grid.Row="12" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PauseOnTrailer}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkPauseOnTrailer}"/>
-                        <CheckBox Name="ChkRandomizeOnEverySelect" Grid.Row="14" Grid.ColumnSpan="2" IsChecked="{Binding Settings.RandomizeOnEverySelect}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkRandomizeOnEverySelect}"/>
-                        <CheckBox Name="ChkRandomizeOnMusicEnd" Grid.Row="16" Grid.ColumnSpan="2" IsChecked="{Binding Settings.RandomizeOnMusicEnd}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkRandomizeOnMusicEnd}"/>
-                        <CheckBox Name="ChkCollectFromGames" Grid.Row="18" Grid.ColumnSpan="2" IsChecked="{Binding Settings.CollectFromGames}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkCollectFromGames}"/>
-                        <CheckBox Name="ChkBackgroundNone" Grid.Row="20" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PlayBackupMusic}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkBackup}"/>
-                        <CheckBox Name="ChkBackgroundNoneCollect" Grid.Row="22" Grid.ColumnSpan="2"
+                        <CheckBox Name="ChkPauseNotInLibrary" Grid.Row="14" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PauseNotInLibrary}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkPauseNotInLibrary}"/>
+                        <CheckBox Name="ChkSkipFirstSelectMusic" Grid.Row="16" Grid.ColumnSpan="2" IsChecked="{Binding Settings.SkipFirstSelectMusic}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkSkipFirstSelectMusic}"/>
+                        <CheckBox Name="ChkRandomizeOnEverySelect" Grid.Row="18" Grid.ColumnSpan="2" IsChecked="{Binding Settings.RandomizeOnEverySelect}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkRandomizeOnEverySelect}"/>
+                        <CheckBox Name="ChkRandomizeOnMusicEnd" Grid.Row="20" Grid.ColumnSpan="2" IsChecked="{Binding Settings.RandomizeOnMusicEnd}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkRandomizeOnMusicEnd}"/>
+                        <CheckBox Name="ChkCollectFromGames" Grid.Row="22" Grid.ColumnSpan="2" IsChecked="{Binding Settings.CollectFromGames}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkCollectFromGames}"/>
+                        <CheckBox Name="ChkBackgroundNone" Grid.Row="24" Grid.ColumnSpan="2" IsChecked="{Binding Settings.PlayBackupMusic}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkBackup}"/>
+                        <CheckBox Name="ChkBackgroundNoneCollect" Grid.Row="26" Grid.ColumnSpan="2"
                                   IsChecked="{Binding Settings.CollectFromGamesOnBackup}"
                                   IsEnabled="{Binding Settings.PlayBackupMusic}"
                                   Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkCollectFromGamesOnBackup}"/>
-                        <CheckBox Name="ChkTagMissing" Grid.Row="24" Grid.ColumnSpan="2" IsChecked="{Binding Settings.TagMissingEntries}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkTagMissing}"/>
-                        <CheckBox Name="ChkTagNormal" Grid.Row="26" Grid.ColumnSpan="2" IsChecked="{Binding Settings.TagNormalizedGames}" Content="{DynamicResource LOC_PLAYNITESOUNDS_Normalize_Tag}"/>
+                        <CheckBox Name="ChkTagMissing" Grid.Row="28" Grid.ColumnSpan="2" IsChecked="{Binding Settings.TagMissingEntries}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkTagMissing}"/>
+                        <CheckBox Name="ChkTagNormal" Grid.Row="30" Grid.ColumnSpan="2" IsChecked="{Binding Settings.TagNormalizedGames}" Content="{DynamicResource LOC_PLAYNITESOUNDS_Normalize_Tag}"/>
                     </Grid>
                 </GroupBox>
                 <GroupBox Header="{DynamicResource LOC_PLAYNITESOUNDS_Actions_Download}" Grid.Row="1" Grid.ColumnSpan="2"  Margin="0,5,0,0">
@@ -238,6 +243,7 @@
                     </StackPanel>
                 </GroupBox>
             </StackPanel>
+        </ScrollViewer>
         </TabItem>
     </TabControl>
 </UserControl>
