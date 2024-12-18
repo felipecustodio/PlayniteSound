@@ -5,15 +5,15 @@ Packages:
     ReleaseDate: 2024-12-18
     PackageUrl: https://github.com/ashpynov/PlayniteSound/releases/download/v5.7.17/Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb_5_7_17.pext
     Changelog:
-      - FIXED: Alt version to pause music when switching tabs (#11)
+      - FIXED Alt version to pause music when switching tabs (#11)
   - Version: 5.7.16
     RequiredApiVersion: 6.11.0
     ReleaseDate: 2024-12-16
     PackageUrl: https://github.com/ashpynov/PlayniteSound/releases/download/v5.7.16/Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb_5_7_16.pext
     Changelog:
-      - FEATURE: Pause Sound when switching tabs (play misic only in Library in Desktop mode) (#11)
-      - FIXED: Playnite Sounds Mod no longer pulls Youtube Properly (#14)
-      - FIXED: Sound playing on startup (option to skip music activation on first selection at startup) (#15)
+      - FEATURE Pause Sound when switching tabs (play misic only in Library in Desktop mode) (#11)
+      - FIXED Playnite Sounds Mod no longer pulls Youtube Properly (#14)
+      - FIXED Sound playing on startup (option to skip music activation on first selection at startup) (#15)
   - Version: 5.7.15
     RequiredApiVersion: 6.11.0
     ReleaseDate: 2024-11-15
