@@ -217,7 +217,7 @@ namespace PlayniteSounds
             }
             if (args.PropertyName == "ActiveView" && SettingsModel.Settings.PauseNotInLibrary)
             {
-                ReplayMusic();
+                PauseOrResumeMusic();
             }
         }
 
@@ -648,6 +648,18 @@ namespace PlayniteSounds
                 }
 
                 _musicPlayer.Volume = Settings.MusicVolume / 100.0;
+            }
+        }
+
+        public void PauseOrResumeMusic()
+        {
+            if (ShouldPlayMusic())
+            {
+                ResumeMusic();
+            }
+            else
+            {
+                PauseMusic();
             }
         }
 
