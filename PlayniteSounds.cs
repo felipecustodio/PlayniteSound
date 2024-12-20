@@ -2199,7 +2199,7 @@ namespace PlayniteSounds
             var playOnFullScreen = !desktopMode && (state == AudioState.Fullscreen || state == AudioState.Always);
             var playOnDesktop = desktopMode && (state == AudioState.Desktop || state == AudioState.Always);
 
-            playOnDesktop &= !SettingsModel.Settings.PauseNotInLibrary || GetMainModel().ActiveView.GetType().Name == "Library";
+            playOnDesktop &= desktopMode && (!SettingsModel.Settings.PauseNotInLibrary || GetMainModel().ActiveView.GetType().Name == "Library");
 
             var skipFirstSelectMusic = _firstSelect && Settings.SkipFirstSelectMusic;
 
