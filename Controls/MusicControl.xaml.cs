@@ -2,15 +2,20 @@
 using Playnite.SDK.Controls;
 using PlayniteSounds.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Markup;
 
 namespace PlayniteSounds.Controls
 {
     public partial class MusicControl : PluginUserControl, INotifyPropertyChanged
     {
-        private PlayniteSoundsSettings _settings;
+        static private PlayniteSoundsSettings _settings;
+
+        static List<MusicControl> musicControls = new List<MusicControl>();
 
         static MusicControl()
         {
@@ -19,16 +24,36 @@ namespace PlayniteSounds.Controls
 
         public MusicControl(PlayniteSoundsSettings settings)
         {
-            InitializeComponent();
+            ((IComponentConnector)this).InitializeComponent();
             DataContext = this;
             _settings = settings;
             _settings.PropertyChanged += OnSettingsChanged;
+
+            Unloaded += OnUnloaded;
+
+            musicControls.Add(this);
         }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            musicControls.Remove(this);
+            UpdateMute();
+        }
+
+        private static void UpdateMute()
+        {
+            bool mute = musicControls.Count(c => Convert.ToBoolean(c.Tag)) > 0;
+            if (_settings.VideoIsPlaying != mute)
+            {
+                _settings.VideoIsPlaying = mute;
+            }
+        }
+
         private static void OnTagChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is MusicControl musicControl)
             {
-                musicControl.VideoIsPlaying = Convert.ToBoolean(e.NewValue);
+                UpdateMute();
             }
         }
 

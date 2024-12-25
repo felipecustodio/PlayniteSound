@@ -182,6 +182,7 @@ namespace PlayniteSounds
                     SourceName = "Sounds",
                     ElementList = new List<string> { "MusicControl" }
                 });
+                MenuWindowMonitor.Attach(PlayniteApi, SettingsModel.Settings);
 
                 #endregion
                 AddSettingsSupport(new AddSettingsSupportArgs
@@ -197,6 +198,8 @@ namespace PlayniteSounds
                     (GetMainModel() as ObservableObject).PropertyChanged += OnMainModelChanged;
                 }
                 SupressNativeFulscreenMusic();
+
+
             }
             catch (Exception e)
             {
