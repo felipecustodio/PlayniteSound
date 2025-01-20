@@ -1,5 +1,11 @@
 AddonId: 'Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb'
 Packages:
+  - Version: 5.7.20
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2025-01-20
+    PackageUrl: https://github.com/ashpynov/PlayniteSound/releases/download/v5.7.20/Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb_5_7_20.pext
+    Changelog:
+      - "Fixed: [BUG] Play/Pause button doesn't seem to work anymore #21"
   - Version: 5.7.19
     RequiredApiVersion: 6.11.0
     ReleaseDate: 2024-12-25

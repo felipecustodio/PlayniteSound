@@ -19,7 +19,7 @@ namespace PlayniteSounds.Controls
 
         static MusicControl()
         {
-            TagProperty.OverrideMetadata(typeof(MusicControl), new FrameworkPropertyMetadata(-1, OnTagChanged));
+            TagProperty.OverrideMetadata(typeof(MusicControl), new FrameworkPropertyMetadata(null, OnTagChanged));
         }
 
         public MusicControl(PlayniteSoundsSettings settings)
@@ -29,9 +29,16 @@ namespace PlayniteSounds.Controls
             _settings = settings;
             _settings.PropertyChanged += OnSettingsChanged;
 
+            Loaded += OnLoaded;
             Unloaded += OnUnloaded;
 
             musicControls.Add(this);
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            musicControls.AddMissing(this);
+            UpdateMute();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
