@@ -21,6 +21,7 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkAutoDownload">Télécharger automatiquement de la musique pour les nouveaux jeux ajoutés lors de la mise à jour de la bibliothèque</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkRandomizeOnMusicEnd">Mélanger la musique à chaque boucle</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkRandomizeOnEverySelect">Mélanger la musique lors de chaque sélection</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_RestartBackupMusic">Redémarrer la musique de sauvegarde lors de la sélection</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkBackup">Lire une musique de secours lorsque la musique par défaut ne peut pas être trouvée</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_StopMusic">Arrêter la musique lorsque</sys:String>
 

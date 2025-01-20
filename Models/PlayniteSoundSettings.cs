@@ -189,5 +189,6 @@ namespace PlayniteSounds.Models
 
         [DontSerialize]
         public bool GameDetailsVisible { get; set; } = false;
+        public bool RestartBackupMusic { get; set; } = false;
     }
 }

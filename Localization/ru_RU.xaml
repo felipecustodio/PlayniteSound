@@ -10,7 +10,7 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_Music">Музыка</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_Sound">Звук</sys:String>
 
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusic">Общая</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusic">Фоновая</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusicPlatform">Платформа</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusicPlatformGame">Игра</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_CmbMusicTypeFilter">Фильтр</sys:String>
@@ -24,7 +24,8 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkAutoDownload">Автоматически загружать музыку для только что добавленных игр при обновлении библиотеки</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkRandomizeOnMusicEnd">Случайный выбор музыки при повторе</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkRandomizeOnEverySelect">Случайный выбор музыки при выборе</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkBackup">Воспроизводить запасную музыку, если музыка для игры или платформы не найдена</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkBackup">Воспроизводить фоновую музыку, если музыка для игры или платформы не найдена</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_RestartBackupMusic">Случайный выбор фоновой музыки при смене игры</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_StopMusic">Останавливать когда:</sys:String>
 
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize">Автоматически нормализовать громкость при загрузке</sys:String>

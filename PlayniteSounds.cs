@@ -26,6 +26,7 @@ using PlayniteSounds.Controls;
 using PlayniteSounds.ViewModels;
 using System.Threading.Tasks;
 using System.Data;
+using System.Windows.Media.Animation;
 
 namespace PlayniteSounds
 {
@@ -738,10 +739,44 @@ namespace PlayniteSounds
 
             if (Settings.PlayBackupMusic && !files.Any())
             {
-                files = new List<string>(GetBackupFiles());
+                files.AddMissing(GetBackupFiles());
+                if (!Settings.RestartBackupMusic)
+                {
+                    PlayBackgroundMusic(files);
+                    return;
+                }
             }
 
+            PauseBackgroundMusic();
             PlayMusicFromFiles(files);
+        }
+
+        private void PauseBackgroundMusic()
+        {
+            if (_isPlayingBackgroundMusic)
+            {
+                _lastBackgroundMusicFileName = _prevMusicFileName;
+                _backgroundMusicPausedOnTime = _musicPlayer.Clock?.CurrentTime ?? default;
+                _isPlayingBackgroundMusic = false;
+            }
+        }
+        private void PlayBackgroundMusic(List<string> musicFiles)
+        {
+            if (_isPlayingBackgroundMusic && !_musicEnded)
+            {
+                return;
+            }
+
+            _isPlayingBackgroundMusic = true;
+
+            if (_musicEnded || string.IsNullOrEmpty(_lastBackgroundMusicFileName) || _backgroundMusicPausedOnTime == default)
+            {
+                PlayMusicFromFiles(musicFiles);
+            }
+            else if (_lastBackgroundMusicFileName != _prevMusicFileName )
+            {
+                Try(() => _musicFader?.Switch(SubCloseMusic, () => SubPlayMusicFromPath(_lastBackgroundMusicFileName, _backgroundMusicPausedOnTime)));
+            }
         }
 
         private void PlayMusicFromFiles(List<string> musicFiles)
@@ -846,7 +881,7 @@ namespace PlayniteSounds
             _prevMusicFileName = string.Empty;
         }
 
-        private void SubPlayMusicFromPath(string filePath)
+        private void SubPlayMusicFromPath(string filePath, TimeSpan startFrom = default)
         {
             ReloadMusic = false;
             _prevMusicFileName = string.Empty;
@@ -855,6 +890,10 @@ namespace PlayniteSounds
                 _prevMusicFileName = filePath;
                 _timeLine.Source = new Uri(filePath);
                 _musicPlayer.Clock = _timeLine.CreateClock();
+                if (startFrom != default)
+                {
+                    _musicPlayer.Clock.Controller.Seek(startFrom, TimeSeekOrigin.BeginTime);
+                }
                 _musicEnded = false;
                 SettingsModel.Settings.CurrentMusicName = Path.GetFileNameWithoutExtension(filePath);
             }
@@ -2302,6 +2341,10 @@ namespace PlayniteSounds
 
         static public bool _muteExceptions = false;
         static public List<string> _mutedErrors = new List<string>();
+
+        private bool _isPlayingBackgroundMusic = false;
+        private string _lastBackgroundMusicFileName = null;
+        private TimeSpan _backgroundMusicPausedOnTime = default;
 
         static public void MuteExceptions(bool mute = true)
         {
