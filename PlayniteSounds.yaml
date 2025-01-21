@@ -1,5 +1,11 @@
 AddonId: 'Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb'
 Packages:
+  - Version: 5.7.22
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2025-01-21
+    PackageUrl: https://github.com/ashpynov/PlayniteSound/releases/download/v5.7.22/Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb_5_7_22.pext
+    Changelog:
+      - Do not reset background music on custom music completed #20
   - Version: 5.7.21
     RequiredApiVersion: 6.11.0
     ReleaseDate: 2025-01-21

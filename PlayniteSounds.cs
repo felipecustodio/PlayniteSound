@@ -767,9 +767,15 @@ namespace PlayniteSounds
                 return;
             }
 
+            if (_isPlayingBackgroundMusic && _musicEnded)
+            {
+                PlayMusicFromFiles(musicFiles);
+                return;
+            }
+
             _isPlayingBackgroundMusic = true;
 
-            if (_musicEnded || string.IsNullOrEmpty(_lastBackgroundMusicFileName) || _backgroundMusicPausedOnTime == default)
+            if (string.IsNullOrEmpty(_lastBackgroundMusicFileName) || _backgroundMusicPausedOnTime == default)
             {
                 PlayMusicFromFiles(musicFiles);
             }
