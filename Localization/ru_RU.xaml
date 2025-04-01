@@ -136,5 +136,8 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_TimeoutError">Прервано по таймауту</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_WereError">Одна или несколько ошибок произошли во время загрузки:</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_SkipLabel">Пропустить</sys:String>
+	<sys:String x:Key="LOC_PLAYNITESOUNDS_Legacy_WMP_NotInstalled" xml:space="preserve">Для работы Playnite Sounds требуется встроенный Windows Media Player.
+
+Хотите установить его сейчас?</sys:String>
 
 </ResourceDictionary>

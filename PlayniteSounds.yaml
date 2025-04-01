@@ -1,5 +1,11 @@
 AddonId: 'Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb'
 Packages:
+  - Version: 5.7.23
+    RequiredApiVersion: 6.11.0
+    ReleaseDate: 2025-04-01
+    PackageUrl: https://github.com/ashpynov/PlayniteSound/releases/download/v5.7.23/Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb_5_7_23.pext
+    Changelog:
+      - Handle error if required legacy media player is not installed and Install it using DISM tool.
   - Version: 5.7.22
     RequiredApiVersion: 6.11.0
     ReleaseDate: 2025-01-21

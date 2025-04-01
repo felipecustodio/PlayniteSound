@@ -144,6 +144,7 @@ namespace PlayniteSounds
                 Localization.SetPluginLanguage(PluginFolder, api.ApplicationSettings.Language);
                 _musicPlayer = new MediaPlayer();
                 _musicPlayer.MediaEnded += MediaEnded;
+                _musicPlayer.MediaFailed += MediaFailed;
                 _musicFader = new MusicFader(_musicPlayer, Settings);
                 _timeLine = new MediaTimeline();
                 //{
@@ -389,9 +390,13 @@ namespace PlayniteSounds
             CloseAudioFiles();
             CloseMusic();
 
-            _musicPlayer.MediaEnded -= MediaEnded;
+            if (_musicPlayer != null)
+            {
+                _musicPlayer.MediaEnded -= MediaEnded;
+                _musicPlayer.MediaFailed -= MediaFailed;
+            }
 
-            _musicFader.Destroy();
+            _musicFader?.Destroy();
             _musicFader = null;
             _musicPlayer = null;
         }
@@ -1025,6 +1030,82 @@ namespace PlayniteSounds
             }
         }
 
+        private bool EnableDISMFeature(string featureName)
+        {
+            bool result = false;
+
+            Dialogs.ActivateGlobalProgress(a => Try(() =>
+                {
+                    a.ProgressMaxValue = 100;
+                    a.CurrentProgressValue = 0;
+                    a.Text = $"{ResourceProvider.GetString("LOCSetupRunning")} {featureName}";
+                    a.IsIndeterminate = false;
+
+                    result = Dism.EnableFeature(
+                        featureName,
+                        (progress, message) => {
+                            a.CurrentProgressValue = progress;
+                            a.Text = $"{ResourceProvider.GetString("LOCSetupRunning")} {featureName}\n\n{message}: {progress}%";
+                        });
+
+                }),
+                new GlobalProgressOptions($"{ResourceProvider.GetString("LOCSetupRunning")} {featureName}", false) { IsIndeterminate = false });
+            return result;
+        }
+        private void MediaFailed(object sender, ExceptionEventArgs e)
+        {
+            Logger.Error($"MediaFailed: {e.ErrorException}");
+            if (e.ErrorException.GetType() == typeof(System.Windows.Media.InvalidWmpVersionException))
+            {
+                SubCloseMusic();
+
+                _musicPlayer.MediaEnded -= MediaEnded;
+                //_musicPlayer.MediaFailed -= MediaFailed;
+
+                _musicFader.Destroy();
+                _musicFader = null;
+                _musicPlayer = null;
+
+                var optionInstall = new MessageBoxOption("LOCAddonInstall", true, false);
+                var optionSettings = new MessageBoxOption("LOCExtensionsBrowse", false, false);
+                var optionCancel = new MessageBoxOption(ResourceProvider.GetString("LOCCancelLabel"), false, true);
+
+                var res = Dialogs.ShowMessage(
+                                    ResourceProvider.GetString("LOC_PLAYNITESOUNDS_Legacy_WMP_NotInstalled"),
+                                    e.ErrorException.Message,
+                                    MessageBoxImage.Error,
+                                    new List<MessageBoxOption>() { optionInstall, optionSettings, optionCancel });
+
+                if (res == optionInstall)
+                {
+
+                    if (!EnableDISMFeature("WindowsMediaPlayer"))
+                    {
+                        Process.Start(@"optionalfeatures.exe");
+                    }
+                    else if (Dialogs.ShowMessage(
+                        ResourceProvider.GetString("LOCExtInstallationRestartNotif"),
+                        ResourceProvider.GetString("LOCSettingsRestartTitle"),
+                        MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        object mainModel = PlayniteApi.MainView
+                            .GetType()
+                            .GetField("mainModel", BindingFlags.NonPublic | BindingFlags.Instance)
+                            .GetValue(PlayniteApi.MainView);
+
+                        RelayCommand restartApp = mainModel
+                            .GetType()
+                            .GetProperty("RestartApp", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+                            ?.GetValue(mainModel) as RelayCommand;
+
+                        restartApp?.Execute(null);
+                    }
+                } else if (res == optionSettings)
+                {
+                    Process.Start(@"optionalfeatures.exe");
+                }
+            }
+        }
         #endregion
 
         #region UI
