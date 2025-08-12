@@ -158,6 +158,7 @@ namespace PlayniteSounds
                     ConstructGameMenuItem(Resource.ActionsOpenSelected, OpenMusicDirectory),
                     ConstructGameMenuItem(Resource.ActionsDeleteSelected, DeleteMusicDirectories),
                     ConstructGameMenuItem(Resource.Actions_Normalize, CreateNormalizationDialogue),
+                    ConstructGameMenuItem(Resource.Actions_TrimSilence, CreateTrimDialogue),
                 };
 
                 _mainMenuItems = new List<MainMenuItem>
@@ -1818,6 +1819,33 @@ namespace PlayniteSounds
             ReplayMusic();
         }
 
+        private void CreateTrimDialogue()
+        {
+            var progressTitle = $"{App.AppName} - {Resource.DialogMessageTrimmingFiles}";
+            var progressOptions = new GlobalProgressOptions(progressTitle, true) { IsIndeterminate = false };
+
+            var failedGames = new List<string>();
+
+            CloseMusic();
+
+            Dialogs.ActivateGlobalProgress(a => Try(() =>
+            failedGames = TrimSelectedGameMusicFiles(a, SelectedGames.ToList(), progressTitle)),
+                progressOptions);
+
+            if (failedGames.Any())
+            {
+                var games = string.Join(", ", failedGames);
+                Dialogs.ShowErrorMessage(string.Format("The following games had at least one file fail to trim (see logs for details): ", games), App.AppName);
+            }
+            else
+            {
+                ShowMessage(Resource.DialogMessageDone);
+            }
+
+            ReloadMusic = true;
+            ReplayMusic();
+        }
+
         private List<string> NormalizeSelectedGameMusicFiles(
             GlobalProgressActionArgs args, IList<Game> games, string progressTitle)
         {
@@ -1844,6 +1872,36 @@ namespace PlayniteSounds
                     UpdateNormalizedTag(game);
                 }
                 else
+                {
+                    failedGames.Add(game.Name);
+                }
+            }
+
+            return failedGames;
+        }
+
+        private List<string> TrimSelectedGameMusicFiles(
+            GlobalProgressActionArgs args, IList<Game> games, string progressTitle)
+        {
+            var failedGames = new List<string>();
+
+            int gameIdx = 0;
+            foreach (var game in games.TakeWhile(_ => !args.CancelToken.IsCancellationRequested))
+            {
+                args.ProgressMaxValue = games.Count;
+                args.CurrentProgressValue = ++gameIdx;
+                args.Text = $"{progressTitle}\n\n{args.CurrentProgressValue}/{args.ProgressMaxValue}\n{game.Name}";
+
+                var allMusicTrimmed = true;
+                foreach (var musicFile in Directory.GetFiles(GetMusicDirectoryPath(game)))
+                {
+                    if (!TrimAudioFile(musicFile))
+                    {
+                        allMusicTrimmed = false;
+                    }
+                }
+
+                if (!allMusicTrimmed)
                 {
                     failedGames.Add(game.Name);
                 }
@@ -1917,6 +1975,88 @@ namespace PlayniteSounds
                 }
 
                 Logger.Info($"FFmpeg-Normalize succeeded for file '{filePath}.");
+                return true;
+            }
+        }
+
+        private bool TrimAudioFile(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(Settings.FFmpegPath))
+            {
+                throw new ArgumentException("FFmpeg path is undefined");
+            }
+
+            if (!File.Exists(Settings.FFmpegPath))
+            {
+                throw new ArgumentException("FFmpeg path does not exist");
+            }
+
+            var tempFile = Path.GetTempFileName();
+            var tempFilePath = Path.ChangeExtension(tempFile, Path.GetExtension(filePath));
+            File.Delete(tempFile);
+
+            var info = new ProcessStartInfo
+            {
+                FileName = Settings.FFmpegPath,
+                Arguments = $"-i \"{filePath}\" {SoundFile.DefaultTrimArgs} \"{tempFilePath}\" -y",
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+
+            var stdout = string.Empty;
+            var stderr = string.Empty;
+            using (var proc = new Process())
+            {
+                proc.StartInfo = info;
+                proc.OutputDataReceived += (_, e) =>
+                {
+                    if (e.Data != null)
+                    {
+                        stdout += e.Data + Environment.NewLine;
+                    }
+                };
+
+                proc.ErrorDataReceived += (_, e) =>
+                {
+                    if (e.Data != null)
+                    {
+                        stderr += e.Data + Environment.NewLine;
+                    }
+                };
+
+                proc.Start();
+                proc.BeginOutputReadLine();
+                proc.BeginErrorReadLine();
+                proc.WaitForExit();
+
+                if (!string.IsNullOrWhiteSpace(stderr))
+                {
+                    Logger.Error($"FFmpeg trim failed for file '{filePath}' with error: {stderr} and output: {stdout}");
+                    if (File.Exists(tempFilePath))
+                    {
+                        File.Delete(tempFilePath);
+                    }
+                    return false;
+                }
+
+                try
+                {
+                    File.Delete(filePath);
+                    File.Move(tempFilePath, filePath);
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, $"Replacing trimmed file failed for '{filePath}'.");
+                    if (File.Exists(tempFilePath))
+                    {
+                        File.Delete(tempFilePath);
+                    }
+                    return false;
+                }
+
+                Logger.Info($"FFmpeg trim succeeded for file '{filePath}'.");
                 return true;
             }
         }
@@ -2007,6 +2147,15 @@ namespace PlayniteSounds
                 }
 
                 var fileDownloaded = newFilePaths != null;
+                if (Settings.TrimSilence && fileDownloaded)
+                {
+                    foreach (string newFilePath in newFilePaths)
+                    {
+                        args.Text += $" - {Resource.DialogMessageTrimmingFiles}";
+                        TrimAudioFile(newFilePath);
+                    }
+                }
+
                 bool normalized = false;
                 if (Settings.NormalizeMusic && fileDownloaded)
                 {
