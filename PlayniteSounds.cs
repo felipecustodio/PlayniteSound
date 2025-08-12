@@ -1985,6 +1985,7 @@ namespace PlayniteSounds
         {
 
             int gameIdx = 0;
+            var failedGames = new List<string>();
             GlobalStatus = args;
 
             foreach (var game in games.TakeWhile(_ => !args.CancelToken.IsCancellationRequested))
@@ -2005,8 +2006,19 @@ namespace PlayniteSounds
                 {
                     break;
                 }
+                catch (Exception e)
+                {
+                    HandleException(e);
+                    failedGames.Add(game.Name);
+                    continue;
+                }
 
                 var fileDownloaded = newFilePaths != null;
+                if (!fileDownloaded)
+                {
+                    failedGames.Add(game.Name);
+                }
+
                 bool normalized = false;
                 if (Settings.NormalizeMusic && fileDownloaded)
                 {
@@ -2022,6 +2034,19 @@ namespace PlayniteSounds
                 }
 
                 UpdateMissingTag(game, fileDownloaded, gameDirectory);
+            }
+
+            if (failedGames.Any())
+            {
+                var message = $"Failed to download music for {failedGames.Count} item(s). Check logs for details.";
+                if (_muteExceptions)
+                {
+                    _mutedErrors = new List<string> { message };
+                }
+                else
+                {
+                    Dialogs.ShowErrorMessage(message, App.AppName);
+                }
             }
         }
 
@@ -2174,9 +2199,17 @@ namespace PlayniteSounds
                 }
                 else
                 {
-                    if (DownloadManager.BestSongPick(album.Songs.ToList(), regexGameName) is Song bestSong)
+                    var songs = DownloadManager.GetSongsFromAlbum(album, token)
+                        .Where(s => s != null)
+                        .ToList();
+
+                    if (!songs.Any())
                     {
-                        selectedSong = new List<Song>() { bestSong };
+                        Logger.Info($"Did not find any songs for album '{album.Name}' of game '{gameName}'");
+                    }
+                    else if (DownloadManager.BestSongPick(songs, regexGameName) is Song bestSong)
+                    {
+                        selectedSong = new List<Song> { bestSong };
                     }
                     else
                     {
