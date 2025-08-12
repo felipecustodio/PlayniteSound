@@ -58,6 +58,7 @@ namespace PlayniteSounds
                     Resource.MsgHelp6 + "\n\n" +
                     HelpLine(SoundFile.BaseApplicationStartedSound) +
                     HelpLine(SoundFile.BaseApplicationStoppedSound) +
+                    HelpLine(SoundFile.BaseGameInstallSound) +
                     HelpLine(SoundFile.BaseGameInstalledSound) +
                     HelpLine(SoundFile.BaseGameSelectedSound) +
                     HelpLine(SoundFile.BaseGameStartedSound) +
@@ -173,6 +174,7 @@ namespace PlayniteSounds
                 DownloadManager = new DownloadManager(Settings, Path.Combine(_musicFilesDataPath,"tmp"));
 
                 PlayniteApi.Database.Games.ItemCollectionChanged += CleanupDeletedGames;
+                PlayniteApi.Database.Games.ItemUpdated += OnGameItemUpdated;
                 PlayniteApi.Database.Platforms.ItemCollectionChanged += UpdatePlatforms;
                 PlayniteApi.Database.FilterPresets.ItemCollectionChanged += UpdateFilters;
                 PlayniteApi.UriHandler.RegisterSource("Sounds", HandleUriEvent);
@@ -541,6 +543,18 @@ namespace PlayniteSounds
             }
 
             DeleteDirectories(ItemCollectionChangedArgs.RemovedItems, GetFilterDirectoryPath);
+        }
+
+        private void OnGameItemUpdated(object sender, ItemUpdatedEventArgs<Game> args)
+        {
+            foreach (var update in args.UpdatedItems)
+            {
+                if (update.OldData != null && update.NewData != null &&
+                    !update.OldData.IsInstalling && update.NewData.IsInstalling)
+                {
+                    PlaySoundFileFromName(SoundFile.GameInstallSound);
+                }
+            }
         }
 
         private void DeleteDirectories<T>(IEnumerable<T> directoryLinks, Func<T, string> PathConstructor)

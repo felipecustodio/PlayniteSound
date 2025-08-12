@@ -13,6 +13,7 @@ namespace PlayniteSounds.Common.Constants
 
         public static string ApplicationStartedSound => CurrentPrefix + BaseApplicationStartedSound;
         public static string ApplicationStoppedSound => CurrentPrefix + BaseApplicationStoppedSound;
+        public static string GameInstallSound => CurrentPrefix + BaseGameInstallSound;
         public static string GameInstalledSound => CurrentPrefix + BaseGameInstalledSound;
         public static string GameSelectedSound => CurrentPrefix + BaseGameSelectedSound;
         public static string GameStartedSound => CurrentPrefix + BaseGameStartedSound;
@@ -28,6 +29,7 @@ namespace PlayniteSounds.Common.Constants
 
         public const string BaseApplicationStartedSound = "ApplicationStarted.wav";
         public const string BaseApplicationStoppedSound = "ApplicationStopped.wav";
+        public const string BaseGameInstallSound = "GameInstall.wav";
         public const string BaseGameInstalledSound = "GameInstalled.wav";
         public const string BaseGameSelectedSound = "GameSelected.wav";
         public const string BaseGameStartedSound = "GameStarted.wav";

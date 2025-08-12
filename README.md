@@ -30,6 +30,7 @@ They are located in the sounds folder of the extension, you can open that folder
 | ------------- |---------------|-------|
 | Playnite Startup | D_ApplicationStarted.wav | F_ApplicationStarted.wav |
 | Playnite Exit     | D_ApplicationStopped.wav | F_ApplicationStopped.wav |
+| Game Installing | D_GameInstall.wav | F_GameInstall.wav |
 | Game Installed | D_GameInstalled.wav | F_GameInstalled.wav |
 | Game UnInstalled | D_GameUninstalled.wav | F_GameUninstalled.wav |
 | Game Selected | D_GameSelected.wav |  F_GameSelected.wav |
