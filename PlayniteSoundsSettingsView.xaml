@@ -26,7 +26,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Label Grid.Row="0"  Name="LblSoundWhere" Content="{DynamicResource LOC_PLAYNITESOUNDS_SoundWhere}" d:LayoutOverrides="VerticalAlignment"/>
-                        <ComboBox Grid.Row="0" Grid.Column="1" Name="CmbSoundWhere" SelectedIndex="{Binding Settings.SoundState, Converter={common:AudioStateConverter}}" Height="20">
+                        <ComboBox Grid.Row="0" Grid.Column="1" Name="CmbSoundWhere" SelectedIndex="{Binding Settings.SoundState, Converter={common:AudioStateConverter}}">
                             <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbItemNever}"/>
                             <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbItemDesktop}"/>
                             <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbItemFullscreen}"/>
@@ -113,7 +113,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Label Grid.Row="0"  Name="LblMusicWhere" Content="{DynamicResource LOC_PLAYNITESOUNDS_MusicWhere}" d:LayoutOverrides="VerticalAlignment"/>
-                        <ComboBox Grid.Row="0" Grid.Column="1" Name="CmbMusicWhere" SelectedIndex="{Binding Settings.MusicState, Converter={common:AudioStateConverter}}" Height="20">
+                        <ComboBox Grid.Row="0" Grid.Column="1" Name="CmbMusicWhere" SelectedIndex="{Binding Settings.MusicState, Converter={common:AudioStateConverter}}">
                             <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbItemNever}"/>
                             <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbItemDesktop}"/>
                             <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbItemFullscreen}"/>
@@ -122,7 +122,7 @@
                         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal"  >
                             <StackPanel Orientation="Horizontal">
                                 <Label Width="220" Content="{DynamicResource LOC_PLAYNITESOUNDS_MusicType}" d:LayoutOverrides="VerticalAlignment"/>
-                                <ComboBox MinWidth="220" Name="CmbMusicType" SelectedValuePath="Tag"  SelectedValue="{Binding Settings.MusicType, Mode=TwoWay}" Height="20">
+                                <ComboBox MinWidth="220" Name="CmbMusicType" SelectedValuePath="Tag"  SelectedValue="{Binding Settings.MusicType, Mode=TwoWay}">
                                     <ComboBoxItem Tag="{x:Static models:MusicType.Default}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusic}"/>
                                     <ComboBoxItem Tag="{x:Static models:MusicType.Platform}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusicPlatform}"/>
                                     <ComboBoxItem Tag="{x:Static models:MusicType.Game}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusicPlatformGame}"/>
@@ -131,7 +131,7 @@
                             </StackPanel>
                             <StackPanel  Orientation="Horizontal" Visibility="{Binding Settings.DetailsMusicTypeVisibility}">
                                 <Label Margin="20,0,10,0" Name="LblDetailsMusicType" Content="{DynamicResource LOC_PLAYNITESOUNDS_DetailsMusicType}" d:LayoutOverrides="VerticalAlignment"/>
-                                <ComboBox MinWidth="220" Name="CmbDetailsMusicType" SelectedValuePath="Tag"  SelectedValue="{Binding Settings.DetailsMusicType, Mode=TwoWay}" Height="20">
+                                <ComboBox MinWidth="220" Name="CmbDetailsMusicType" SelectedValuePath="Tag"  SelectedValue="{Binding Settings.DetailsMusicType, Mode=TwoWay}">
                                     <ComboBoxItem Tag="{x:Static models:MusicType.Same}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeSame}"/>
                                     <ComboBoxItem Tag="{x:Static models:MusicType.Default}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusic}"/>
                                     <ComboBoxItem Tag="{x:Static models:MusicType.Platform}" Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbMusicTypeOneMusicPlatform}"/>
@@ -141,7 +141,7 @@
                             </StackPanel>
                         </StackPanel>
                         <Label Grid.Row="4" Name="LblStopMusic" Content="{DynamicResource LOC_PLAYNITESOUNDS_StopMusic}" d:LayoutOverrides="VerticalAlignment"/>
-                        <ComboBox Grid.Row="4" Grid.Column="1" Name="CmbStopMusic" SelectedIndex="{Binding Settings.StopMusic}" Height="20">
+                        <ComboBox Grid.Row="4" Grid.Column="1" Name="CmbStopMusic" SelectedIndex="{Binding Settings.StopMusic}">
                             <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbStopItemIsStarting}"/>
                             <ComboBoxItem Content="{DynamicResource LOC_PLAYNITESOUNDS_CmbStopItemHasStarted}"/>
                         </ComboBox>
