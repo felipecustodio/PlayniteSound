@@ -193,3 +193,30 @@ After successful build, find output in:
 - **YouTube downloads fail**: Configure correct yt-dlp.exe path in extension settings
 - **Audio normalization fails**: Configure correct FFmpeg path in extension settings
 - **Missing translations**: Check Localization folder contains .json files for your language
+
+## Quick Reference
+
+### Essential Commands (Windows Only)
+```powershell
+# Build extension
+nuget restore PlayniteSounds.sln
+msbuild PlayniteSounds.sln /p:Configuration=Release
+
+# Test build output
+dir bin\Release\
+
+# Package for distribution  
+playnite\toolbox.exe pack "bin\release" "release"
+```
+
+### Key Directories
+- `bin\Release\` - Build output
+- `Sound Files\` - Default audio files 
+- `Localization\` - Translation files
+- `%APPDATA%\Playnite\Extensions\` - Installed extensions
+
+### Remember
+- **Windows only** - Cannot build/test on Linux/macOS
+- **NEVER CANCEL** builds - Use generous timeouts
+- **Manual testing required** - No automated tests exist
+- **Audio files needed** - Extension needs WAV/MP3 files to function
