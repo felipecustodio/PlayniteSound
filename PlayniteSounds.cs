@@ -2188,7 +2188,7 @@ namespace PlayniteSounds
                 }
                 else
                 {
-                    if (DownloadManager.BestSongPick(album.Songs.ToList(), regexGameName) is Song bestSong)
+                    if (DownloadManager.BestSongPick(album.Songs?.ToList() ?? new List<Song>(), regexGameName) is Song bestSong)
                     {
                         selectedSong = new List<Song>() { bestSong };
                     }
