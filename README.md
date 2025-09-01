@@ -39,6 +39,8 @@ Since this is a fork and not listed on the official Playnite addon list, you'll 
    msbuild PlayniteSounds.sln /p:Configuration=Release
    ```
    *This may take 2-3 minutes. Do not cancel.*
+   
+   **Alternative**: Open `PlayniteSounds.sln` in Visual Studio and build using `Build` → `Build Solution` (Ctrl+Shift+B)
 
 4. **Verify build output:**
    After successful build, you should find the compiled extension in `bin\Release\` containing:
@@ -108,11 +110,13 @@ After installation, verify the extension is working:
 
 You can use the included PowerShell script for faster development:
 
-```bash
+```powershell
 powershell.exe -ExecutionPolicy Bypass -File "Scripts\UpdatePlaynite.ps1"
 ```
 
 This script builds and packages the extension automatically.
+
+**Note**: If you get execution policy errors, you may need to run PowerShell as Administrator or adjust your execution policy.
 
 ### Troubleshooting
 
