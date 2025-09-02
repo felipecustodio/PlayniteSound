@@ -2151,8 +2151,20 @@ namespace PlayniteSounds
                 {
                     foreach (string newFilePath in newFilePaths)
                     {
-                        args.Text += $" - {Resource.DialogMessageTrimmingFiles}";
-                        TrimAudioFile(newFilePath);
+                        try
+                        {
+                            TrimAudioFile(newFilePath);
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            // Log the error and continue processing other files
+                            // You may want to use a logging framework or Playnite's logger here
+                            System.Diagnostics.Debug.WriteLine($"Error trimming file '{newFilePath}': {ex.Message}");
+                        }
+                        catch (IOException ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"IO error trimming file '{newFilePath}': {ex.Message}");
+                        }
                     }
                 }
 
