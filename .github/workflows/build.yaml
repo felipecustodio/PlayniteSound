@@ -1,22 +1,22 @@
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
 
-name: Build and Upload Release Asset
+name: Build and Create Release
 
 jobs:
   build:
-    name: Build and Upload Release Asset
+    name: Build and Create Release
     runs-on: windows-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.0.3
+        uses: microsoft/setup-msbuild@v2
         
       - name: Setup NuGet.exe
-        uses: nuget/setup-nuget@v1
+        uses: nuget/setup-nuget@v2
       
       - name: Restore NuGet Packages
         run: nuget restore PlayniteSounds.sln
@@ -24,8 +24,11 @@ jobs:
       - name: Build and Publish
         run: |
           msbuild PlayniteSounds.sln /p:Configuration=Release
-          $version = ($env:GITHUB_REF -Split "/")[-1]
+          $timestamp = Get-Date -Format "yyyy.MM.dd.HHmm"
+          $shortSha = "${{ github.sha }}".Substring(0, 7)
+          $version = "build-$timestamp-$shortSha"
           echo "VERSION=$version" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          echo "RELEASE_TAG=v$version" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
       
       - name: Setup Playnite
         run: |
@@ -37,16 +40,38 @@ jobs:
         run: |
           mkdir release
           playnite\toolbox.exe pack "bin\release" "release"
-          $contents = Get-ChildItem -Path "release" -Force -Recurse -File | Select-Object -First 1
-          echo "PEXTFILE=$contents" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          $pextFile = Get-ChildItem -Path "release" -Filter "*.pext" | Select-Object -First 1
+          $fullPath = $pextFile.FullName
+          echo "PEXTFILE=$fullPath" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          echo "PEXTNAME=$($pextFile.Name)" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.RELEASE_TAG }}
+          release_name: PlayniteSounds ${{ env.VERSION }}
+          body: |
+            Automated build of PlayniteSounds extension
+            
+            **Build Info:**
+            - Commit: ${{ github.sha }}
+            - Built from: ${{ github.ref }}
+            - Build Date: ${{ github.event.head_commit.timestamp }}
+            
+            **Installation:**
+            Download the .pext file and install it through Playnite's Extensions menu.
+          draft: false
+          prerelease: true
           
       - name: Upload Release Asset
-        id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ github.event.release.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.PEXTFILE }}
           asset_name: PlayniteSounds-${{ env.VERSION }}.pext
           asset_content_type: application/zip
