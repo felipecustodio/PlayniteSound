@@ -1835,7 +1835,7 @@ namespace PlayniteSounds
             if (failedGames.Any())
             {
                 var games = string.Join(", ", failedGames);
-                Dialogs.ShowErrorMessage(string.Format("The following games had at least one file fail to trim (see logs for details): ", games), App.AppName);
+                Dialogs.ShowErrorMessage(string.Format("The following games had at least one file fail to trim (see logs for details): {0}", games), App.AppName);
             }
             else
             {
