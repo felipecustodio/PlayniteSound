@@ -6,6 +6,135 @@ It can only play WAV audio files and mp3 for music, nothing else.
 
 [Latest Release](https://github.com/ashpynov/PlayniteSound/releases/latest)
 
+## Local Development and Installation
+
+Since this is a fork and not listed on the official Playnite addon list, you'll need to install it manually. Here's how to build and install the extension locally.
+
+### Prerequisites
+
+**⚠️ Windows Only**: This extension can only be built and run on Windows due to WPF and .NET Framework dependencies.
+
+- **Windows 10/11**
+- **Visual Studio 2019 or later** with .NET desktop development workload
+- **.NET Framework 4.6.2 or later**
+- **NuGet CLI tools** (usually included with Visual Studio)
+- **Playnite** installed on your system ([Download here](https://playnite.link/))
+
+### Building the Extension
+
+1. **Clone this repository:**
+   ```bash
+   git clone https://github.com/felipecustodio/PlayniteSound.git
+   cd PlayniteSound
+   ```
+
+2. **Restore NuGet packages:**
+   ```bash
+   nuget restore PlayniteSounds.sln
+   ```
+   *This may take 1-2 minutes. Do not cancel.*
+
+3. **Build the extension:**
+   ```bash
+   msbuild PlayniteSounds.sln /p:Configuration=Release
+   ```
+   *This may take 2-3 minutes. Do not cancel.*
+   
+   **Alternative**: Open `PlayniteSounds.sln` in Visual Studio and build using `Build` → `Build Solution` (Ctrl+Shift+B)
+
+4. **Verify build output:**
+   After successful build, you should find the compiled extension in `bin\Release\` containing:
+   - `PlayniteSounds.dll` (main extension file)
+   - `extension.yaml` (metadata)
+   - `icon.png`
+   - `Localization\` folder (translations)
+   - `Sound Files\` folder (default audio files)
+   - Other dependencies
+
+### Installation Methods
+
+#### Method 1: Using .pext Package (Recommended)
+
+1. **Setup Playnite toolbox** (one-time setup):
+   ```bash
+   mkdir playnite
+   Invoke-WebRequest -Uri "https://github.com/JosefNemec/Playnite/releases/download/9.16/Playnite916.zip" -OutFile "playnite\Playnite916.zip"
+   Expand-Archive "playnite\playnite916.zip" -DestinationPath "playnite"
+   ```
+
+2. **Package the extension:**
+   ```bash
+   mkdir release
+   playnite\toolbox.exe pack "bin\release" "release"
+   ```
+
+3. **Install the .pext file:**
+   - Locate the generated `.pext` file in the `release\` folder
+   - Double-click the `.pext` file, or
+   - In Playnite: `Extensions` → `Install Extension` → Select the `.pext` file
+
+#### Method 2: Manual Installation
+
+1. **Locate Playnite extensions folder:**
+   ```
+   %APPDATA%\Playnite\Extensions\
+   ```
+
+2. **Create extension folder:**
+   Create a new folder named `Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb`
+
+3. **Copy files:**
+   Copy all contents from `bin\Release\` to the extension folder created above.
+
+4. **Restart Playnite:**
+   Close and restart Playnite to load the extension.
+
+### Verifying Installation
+
+After installation, verify the extension is working:
+
+1. **Check extension menu:**
+   - In Playnite, go to `Extensions` → `Playnite Sounds`
+   - You should see options like "Open Audio Files Folder", "Open Music Folder", etc.
+
+2. **Check settings:**
+   - Go to `Extensions` → `Playnite Sounds` → `Settings`
+   - The settings window should open without errors
+
+3. **Test audio (optional):**
+   - Place some `.wav` or `.mp3` files in the Sound Files folder
+   - Use `Extensions` → `Playnite Sounds` → `Reload Audio Files`
+   - Audio should play during Playnite events
+
+### Quick Build Script
+
+You can use the included PowerShell script for faster development:
+
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File "Scripts\UpdatePlaynite.ps1"
+```
+
+This script builds and packages the extension automatically.
+
+**Note**: If you get execution policy errors, you may need to run PowerShell as Administrator or adjust your execution policy.
+
+### Troubleshooting
+
+**Build Issues:**
+- **"MSBuild not found"**: Install Visual Studio with .NET desktop development workload
+- **"PlayniteSDK not found"**: Run `nuget restore` first
+- **"WPF not supported"**: This extension requires Windows
+
+**Installation Issues:**
+- **Extension not appearing**: Check that folder name matches exactly: `Playnite.Sounds.Mod.baf1744c-72f6-4bc1-92cc-474403b279fb`
+- **Audio not playing**: Ensure Windows Media Player is installed (`Settings` → `Apps` → `Optional features` → `Windows Media Player`)
+- **Settings not opening**: Check Playnite logs for errors in `%APPDATA%\Playnite\playnite.log`
+
+**For Developers:**
+- Use Visual Studio for full IDE experience with debugging
+- Extension hot-reload: Copy new DLL to extension folder and restart Playnite
+- Check `PlayniteSounds.cs` for the main plugin entry point
+
 ## If you feel like supporting
 I do everything in my spare time for free, if you feel something aided you and you want to support me, you can always buy me a "koffie" as we say in dutch, no obligations whatsoever...
 
