@@ -63,8 +63,6 @@ jobs:
           
           echo "PEXTFILE=$fullPath" >> $env:GITHUB_ENV
           echo "PEXTNAME=$fileName" >> $env:GITHUB_ENV
-          echo "pext_file=$fullPath" >> $env:GITHUB_OUTPUT
-          echo "pext_name=$fileName" >> $env:GITHUB_OUTPUT
         timeout-minutes: 2
           
       - name: Create Release
