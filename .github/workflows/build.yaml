@@ -34,9 +34,6 @@ jobs:
           $timestamp = Get-Date -Format "yyyy.MM.dd.HHmm"
           $shortSha = "${{ github.sha }}".Substring(0, 7)
           $version = "build-$timestamp-$shortSha"
-          echo "VERSION=$version" >> $env:GITHUB_ENV
-          echo "RELEASE_TAG=v$version" >> $env:GITHUB_ENV
-          echo "version=$version" >> $env:GITHUB_OUTPUT
       
       - name: Setup Playnite Toolbox
         run: |
