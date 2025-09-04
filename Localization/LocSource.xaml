@@ -124,7 +124,7 @@
 
     <sys:String x:Key="LOC_PLAYNITESOUNDS_Migrate">It appears the Playnite Sounds file layout is outdated. These files must be moved for Sounds to function. Would you like to migrate them?</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_CreateBackup">This process may fail. Would you like to select a backup location for the Sounds files?</sys:String>
-	  <sys:String x:Key="LOC_PLAYNITESOUNDS_Legacy_WMP_NotInstalled" xml:space="preserve">Windows Media Player legacy is required for Playnite Sounds.
+	  <sys:String x:Key="LOC_PLAYNITESOUNDS_Legacy_WMP_NotInstalled" xml:space="preserve">Windows Media Player legacy is required for Sounds.
 
 Would you like to Install it now?</sys:String>
 
