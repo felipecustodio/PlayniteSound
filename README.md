@@ -1,4 +1,4 @@
-# Playnite Sounds Extension
+# Sounds Extension
 
 This is a fork of [https://github.com/ashpynov/PlayniteSound](https://github.com/ashpynov/PlayniteSound), which is also a fork of the original [https://github.com/joyrider3774/PlayniteSound](https://github.com/joyrider3774/PlayniteSound).
 
@@ -8,7 +8,7 @@ The original project was abandoned and the PlayniteSoundMod fork has very slow d
 
 ## What it does
 
-Playnite Sounds is an extension to play audio files during Playnite events. It supports WAV audio files and MP3 for music.
+Sounds is an extension to play audio files during Playnite events. It supports WAV audio files and MP3 for music.
 
 ## Installation
 
