@@ -103,6 +103,7 @@ namespace PlayniteSounds.Models
         public bool YtPlaylists { get; set; } = true;
         public bool NormalizeMusic { get; set; } = true;
         public bool TagNormalizedGames { get; set; }
+        public bool TrimSilence { get; set; }
 
         [DontSerialize]
         private string ytDlpPath { get; set; }

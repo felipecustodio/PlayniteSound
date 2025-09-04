@@ -245,6 +245,7 @@
                         </DockPanel>
                         <CheckBox Margin="0,0,0,10" Name="ChkAutoDownload" IsChecked="{Binding Settings.AutoDownload}" Content="{DynamicResource LOC_PLAYNITESOUNDS_ChkAutoDownload}"/>
                         <CheckBox Margin="0,0,0,10" Name="ChkNormalize" IsChecked="{Binding Settings.NormalizeMusic}" Content="{DynamicResource LOC_PLAYNITESOUNDS_Normalize}"/>
+                        <CheckBox Margin="0,0,0,10" Name="ChkTrimSilence" IsChecked="{Binding Settings.TrimSilence}" Content="{DynamicResource LOC_PLAYNITESOUNDS_TrimSilence}"/>
                         <CheckBox Margin="0,0,0,10" Name="ChkPlaylists" IsChecked="{Binding Settings.YtPlaylists}" Content="{DynamicResource LOC_PLAYNITESOUNDS_YtPlaylists}"/>
                     </StackPanel>
                 </GroupBox>

@@ -25,9 +25,10 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ChkBackup">Lire une musique de secours lorsque la musique par défaut ne peut pas être trouvée</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_StopMusic">Arrêter la musique lorsque</sys:String>
 
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize">Normaliser automatiquement la musique lors du téléchargement</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize_Tag">Taguer les jeux normalisés</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_FF_Path">Chemin de FFmpeg :</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize">Normaliser automatiquement la musique lors du téléchargement</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize_Tag">Taguer les jeux normalisés</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_TrimSilence">Supprimer le silence au début lors du téléchargement</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_FF_Path">Chemin de FFmpeg :</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_FF_Hint">FFmpeg est requis pour la normalisation audio et le téléchargement</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_FFNorm_Path">Chemin de ffmpeg-normalize :</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_FFNorm_Hint">La normalisation audio permet d'avoir un volume constant entre les pistes sans compromettre la qualité</sys:String>
@@ -56,9 +57,11 @@
 
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_Youtube">Youtube</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_YoutubeSearch">Recherche Youtube</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_Actions_Normalize">Normaliser les fichiers musicaux</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageNormalizingFiles">Normalisation des fichiers musicaux en cours...</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_NormTag">[PS] Normalisé</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_Actions_Normalize">Normaliser les fichiers musicaux</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageNormalizingFiles">Normalisation des fichiers musicaux en cours...</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_Actions_TrimSilence">Couper le silence de début</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageTrimmingFiles">Suppression du silence des fichiers...</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_NormTag">[PS] Normalisé</sys:String>
 
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_MissingTag">[PS] Musique de fond manquante</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ActionsDownloadMusicForGames">Télécharger des fichiers</sys:String>

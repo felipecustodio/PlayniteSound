@@ -28,9 +28,10 @@
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_RestartBackupMusic">Случайный выбор фоновой музыки при смене игры</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_StopMusic">Останавливать когда:</sys:String>
 
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize">Автоматически нормализовать громкость при загрузке</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize_Tag">Отметить нормализованные игры</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_FF_Path">Путь к ffmpeg:</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize">Автоматически нормализовать громкость при загрузке</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize_Tag">Отметить нормализованные игры</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_TrimSilence">Обрезать тишину в начале при загрузке</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_FF_Path">Путь к ffmpeg:</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_FF_Hint">Для нормализации и загрузки аудио требуется FFmpeg</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_FFNorm_Path">Путь к ffmpeg-normalize:</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_FFNorm_Hint">Нормализация громкости обеспечивает постоянный уровень громкости между треками без потери качества</sys:String>
@@ -59,9 +60,11 @@
 
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_Youtube">YouTube</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_YoutubeSearch">Поиск на YouTube</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_Actions_Normalize">Нормализовать громкость</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageNormalizingFiles">Нормализация громкости...</sys:String>
-	<sys:String x:Key="LOC_PLAYNITESOUNDS_NormTag">[PS] Нормализовано</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_Actions_Normalize">Нормализовать громкость</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageNormalizingFiles">Нормализация громкости...</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_Actions_TrimSilence">Обрезать начальную тишину</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageTrimmingFiles">Удаление тишины из файлов...</sys:String>
+        <sys:String x:Key="LOC_PLAYNITESOUNDS_NormTag">[PS] Нормализовано</sys:String>
 
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_MissingTag">[PS] Отсутствует фоновая музыка</sys:String>
 	<sys:String x:Key="LOC_PLAYNITESOUNDS_ActionsDownloadMusicForGames">Загрузить файлы</sys:String>

@@ -14,8 +14,14 @@ namespace PlayniteSounds.Common.Constants
         public static string Actions_Normalize => _actions_Normalize.Value;
         private static readonly Lazy<string> _actions_Normalize = new Lazy<string>(() => ToId("LOC_PLAYNITESOUNDS_Actions_Normalize"));
 
+        public static string Actions_TrimSilence => _actions_TrimSilence.Value;
+        private static readonly Lazy<string> _actions_TrimSilence = new Lazy<string>(() => ToId("LOC_PLAYNITESOUNDS_Actions_TrimSilence"));
+
         public static string DialogMessageNormalizingFiles => _dialogMessageNormalizingFiles.Value;
         private static readonly Lazy<string> _dialogMessageNormalizingFiles = new Lazy<string>(() => ToId("LOC_PLAYNITESOUNDS_DialogMessageNormalizingFiles"));
+
+        public static string DialogMessageTrimmingFiles => _dialogMessageTrimmingFiles.Value;
+        private static readonly Lazy<string> _dialogMessageTrimmingFiles = new Lazy<string>(() => ToId("LOC_PLAYNITESOUNDS_DialogMessageTrimmingFiles"));
 
         public static string NormTag => _normTag.Value;
         private static readonly Lazy<string> _normTag = new Lazy<string>(() => ToId("LOC_PLAYNITESOUNDS_NormTag"));

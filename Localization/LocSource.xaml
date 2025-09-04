@@ -30,6 +30,7 @@
 
     <sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize">Automatically normalize music when downloading</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_Normalize_Tag">Tag Normalized Games</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_TrimSilence">Trim leading silence when downloading</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_FF_Path">ffmpeg path:</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_FF_Hint">FFmpeg is required for audio normalization and downloading</sys:String>
 
@@ -62,6 +63,8 @@
     <sys:String x:Key="LOC_PLAYNITESOUNDS_YoutubeSearch">Youtube Search</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_Actions_Normalize">Normalize Music Files</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageNormalizingFiles">Normalizing Music files...</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_Actions_TrimSilence">Trim Leading Silence</sys:String>
+    <sys:String x:Key="LOC_PLAYNITESOUNDS_DialogMessageTrimmingFiles">Trimming silence from files...</sys:String>
     <sys:String x:Key="LOC_PLAYNITESOUNDS_NormTag">[PS] Normalized</sys:String>
 
     <sys:String x:Key="LOC_PLAYNITESOUNDS_MissingTag">[PS] Missing Background Music</sys:String>
