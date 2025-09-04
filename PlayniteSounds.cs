@@ -2041,7 +2041,11 @@ namespace PlayniteSounds
                 var message = $"Failed to download music for {failedGames.Count} item(s). Check logs for details.";
                 if (_muteExceptions)
                 {
-                    _mutedErrors = new List<string> { message };
+                    if (_mutedErrors == null)
+                    {
+                        _mutedErrors = new List<string>();
+                    }
+                    _mutedErrors.Add(message);
                 }
                 else
                 {
